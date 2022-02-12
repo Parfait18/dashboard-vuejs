@@ -1,0 +1,56 @@
+{
+    "routes": {
+        "login": "Connexion",
+        "register": "Inscription",
+        "profile": "Compte",
+        "dashboard": "Tableau de bord",
+        "not_found": "Non trouvé",
+        "createrole": "createrole"
+      },
+      "auth": {
+        "password": "Mot de passe",
+        "sign_in": "Se connecter",    
+        "send": "Envoyer",
+        "password_confirmation": "Confirmation du mot de passe",
+        "reset": "Réinitialiser",
+        "firstname": "Prénom ",
+        "lastname": "Nom",
+        "email": "Email",
+        "phonenumber":"Numéro de téléphone",
+        "homecountry":"Pays d'origine",
+        "leveltype":"Type de niveau",
+        "register": "S'inscrire"
+      },
+      "btn": {
+        "login":"Se connecter",
+        "register": "Inscrire",
+        "saverole": "Enrégistrer le rôle"
+      },
+      "validations" :{
+        "required_password":"Le mot de passe est obligatoire",
+        "confirm_password":"La confirmation mot de passe est obligatoire",
+        "match_password":"Le mot de passe doit correspondre",
+        "min_caracter": "Au moins 8 charactères",
+       "valid_email" :"Enter un email valid",
+       "required_email" :"L'email est obligatoire",
+       "required_lastname" :"Le nom est obligatoire",
+       "required_firstname" :"Le prénom est obligatoire",
+       "required_phonenumber" :"Le numéro de téléphone est obligatoire",
+       "required_homecountry" :"Le pays d'origine est obligatoire",
+       "caracter_firstname":"Le prénom doit aussi contenir des caractères",
+       "caracter_lastname":"Le  nom doit aussi contenir des caractères",
+        "leveltype":"Le type de niveau est obligatoire",
+        "required_permissions": "Vous devez choisir au moins une permission",
+        "required_role": "Le nom du rôle est obligatoire",
+        "rolereguex":"Le nom du rôle doit aussi contenir des lettres"
+      },
+      "title":{
+        "login":"Connectez vous",
+        "register":"Enregister un utilisateur",
+        "newrole":"Créer un nouveau rôle"
+      },
+     "fields":{
+        "role":"Rôle"
+      }
+
+  }

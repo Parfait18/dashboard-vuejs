@@ -1,0 +1,55 @@
+{
+  "routes": {
+    "register": "Register",
+    "profile": "Profile",
+    "dashboard": "Dashboard",
+    "not_found": "Not found",
+    "createrole": "createrole"
+  },
+  "auth": {
+    "username": "Username",
+    "firstname": "Firstname",
+    "lastname": "Lastname",
+    "password": "Password",
+    "password_confirmation": "Password confirmation",
+    "sign_in": "Sign in",
+    "send": "Send",
+    "reset": "Reset",
+    "email": "Email",
+    "register": "Register",
+    "phonenumber": "Phone number",
+    "homecountry": "Country of origin",
+    "leveltype": "Level type"
+  },
+  "btn": {
+    "login": "Login",
+    "register": "Register",
+    "saverole": "Save role"
+  },
+  "validations": {
+    "required_password": "Password is required",
+    "confirm_password": "Password confirmation is required",
+    "match_password": "Password must match",
+    "min_caracter": "At least 8 characters",
+    "valid_email": "Please enter valid email",
+    "required_email": "Email is required",
+    "required_lastname": "Lastname is required",
+    "required_firstname": "Firstname is required",
+    "required_phonenumber": "Phone number is required",
+    "required_homecountry": "Country of origine is required",
+    "caracter_firstname": "First name must also contain characters",
+    "caracter_lastname": "Last name must also contain characters",
+    "leveltype": "Level type is required",
+    "required_permissions": "Need to check at least one permission",
+    "required_role": "Role name is required",
+    "rolereguex":"Role name must also contain letters"
+  },
+  "title": {
+    "login": "Sign In",
+    "register": "Register new User",
+    "newrole": "Create new role"
+  },
+  "fields": {
+    "role": "Role"
+  }
+}
