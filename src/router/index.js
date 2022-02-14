@@ -54,27 +54,27 @@ const routes = [
     meta: {
       title: i18n.t("routes.register"),
       middleware: 'admin'
-      }
-    },
-    {
-      path: "/list-agent",
-      name: "listagent",
-      component: ListAgent,
-      meta: {
-        title: i18n.t("routes.listagent"),
-        middleware: 'admin'
-        }
-      }  ,
-      {
-        path: "/list-demands",
-        name: "listdemands",
-        component: ListDemands,
-        meta: {
-          title: i18n.t("routes.Listdemands"),
-          middleware: 'admin'
-          }
-        }     
-  
+    }
+  },
+  {
+    path: "/list-agent",
+    name: "listagent",
+    component: ListAgent,
+    meta: {
+      title: i18n.t("routes.listagent"),
+      middleware: 'admin'
+    }
+  },
+  {
+    path: "/list-demands",
+    name: "listdemands",
+    component: ListDemands,
+    meta: {
+      title: i18n.t("routes.Listdemands"),
+      middleware: 'admin'
+    }
+  }
+
 ];
 
 let router = new VueRouter({
@@ -83,41 +83,65 @@ let router = new VueRouter({
   routes
 })
 router.beforeEach((to, from, next) => {
-  document.title = `E-Visa - ${to.meta.title}`
-  store.dispatch('getUser');
-  if(to.meta.middleware=="admin"){
-    if(store.getters.authenticated){
-      console.log(" connecté")
-      next({name:"dashboard"})
-
+    document.title = `E-Visa - ${to.meta.title}`
+    store.dispatch('getUser');
+    if(to.meta.middleware=="admin"){
+     console.log("admin middlewar")
+      if(store.getters.authenticated){
+        console.log("connecté")
+      }else{
+        console.log("non connecté")
+      }
+     next()
+    }else if(to.meta.middleware=="guest"){
+      console.log("guest middlewar")
+      if(store.getters.authenticated){
+        console.log("connecté")
+      }else{
+        console.log("non connecté")
+      }
+      next()
     }else{
-       console.log(" non connecté")
-      next({name:"login"})
-    }  
-  }else{
-    next()
+      next()
+    }
   }
-  // if(to.meta.middleware=="admin"){
-  //   if(store.getters.authenticated){
-  //     console.log(" connecté")
-  //     next({name:"dashboard"})
+);
+// router.beforeEach((to, from, next) => {
+//   document.title = `E-Visa - ${to.meta.title}`
+//   store.dispatch('getUser');
+//   if(to.meta.middleware=="admin"){
+//     if(store.getters.authenticated){
+//       console.log(" connecté")
+//       next({name:"dashboard"})
 
-  //   }else{
-  //      console.log(" non connecté")
-  //     next({name:"login"})
-  //   }  
-  // }
-  // if(to.meta.middleware=="guest"){
-  //   if(store.getters.authenticated){
-  //     console.log("je suis connecté")
-  //     next({name:"dashboard"})
+//     }else{
+//        console.log(" non connecté")
+//       next({name:"login"})
+//     }  
+//   }else{
+//     next()
+//   }
+//   if(to.meta.middleware=="admin"){
+//     if(store.getters.authenticated){
+//       console.log(" connecté")
+//       next({name:"dashboard"})
 
-  //   }else{
-  //      console.log("je suis non connecté")
-  //     next({name:"login"})
-  //   }  
-  // }
-})
+//     }else{
+//        console.log(" non connecté")
+//       next({name:"login"})
+//     }  
+//   }
+//   if(to.meta.middleware=="guest"){
+//     if(store.getters.authenticated){
+//       console.log("je suis connecté")
+//       next({name:"dashboard"})
+
+//     }else{
+//        console.log("je suis non connecté")
+//       next({name:"login"})
+//     }  
+//   }
+// })
 
 
 export default router
