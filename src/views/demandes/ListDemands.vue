@@ -481,9 +481,14 @@ mixins: [validationMixin],
           value: "code_demande",
         },
         {
-          text: i18n.t("headers.fullname"),
+          text: i18n.t("headers.firstname"),
           align: "center",
-          value: "full_name",
+          value: "firstname",
+        },
+         {
+          text: i18n.t("headers.lastname"),
+          align: "center",
+          value:"lastname",
         },
         {
           text: i18n.t("headers.country"),
@@ -694,47 +699,47 @@ mixins: [validationMixin],
         {
           code_demande: "78EZ7EDD",
 
-          full_name: "Tony Stark",
-
+         lastname: "Tony Stark",
+          firstname: "Tony Stark",
           pays_demande: "Ghana",
           type_visas: "Visa de travail",
 
           statut_demande: "Validé",
           created_at: "12-04-2022",
         },
-        {
-          code_demande: "78EZ7EDD",
+        // {
+        //   code_demande: "78EZ7EDD",
 
-          full_name: "Tony Stark",
+        //   full_name: "Tony Stark",
 
-          pays_demande: "Ghana",
-          type_visas: "Visa de travail",
+        //   pays_demande: "Ghana",
+        //   type_visas: "Visa de travail",
 
-          statut_demande: "Validé",
-          created_at: "12-04-2022",
-        },
-        {
-          code_demande: "78EZ7EDD",
+        //   statut_demande: "Validé",
+        //   created_at: "12-04-2022",
+        // },
+        // {
+        //   code_demande: "78EZ7EDD",
 
-          full_name: "Tony Stark",
+        //   full_name: "Tony Stark",
 
-          pays_demande: "Ghana",
-          type_visas: "Visa de travail",
+        //   pays_demande: "Ghana",
+        //   type_visas: "Visa de travail",
 
-          statut_demande: "Validé",
-          created_at: "12-04-2022",
-        },
-        {
-          code_demande: "78EZ7EDD",
+        //   statut_demande: "Validé",
+        //   created_at: "12-04-2022",
+        // },
+        // {
+        //   code_demande: "78EZ7EDD",
 
-          full_name: "Tony Stark",
+        //   full_name: "Tony Stark",
 
-          pays_demande: "Ghana",
-          type_visas: "Visa de travail",
+        //   pays_demande: "Ghana",
+        //   type_visas: "Visa de travail",
 
-          statut_demande: "Validé",
-          created_at: "12-04-2022",
-        },
+        //   statut_demande: "Validé",
+        //   created_at: "12-04-2022",
+        // },
       ];
     },
       getColor(statut) {
