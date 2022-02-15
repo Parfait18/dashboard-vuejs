@@ -4,7 +4,7 @@
       <div class="col-md-12 col-lg-12">
         <v-data-table
           :headers="headers"
-          :items="desserts"
+          :items="agents"
           sort-by="calories"
           class="elevation-1 p-2"
         >
@@ -22,7 +22,7 @@
                     v-bind="attrs"
                     v-on="on"
                   >
-                 Ajouter un agent
+                    Ajouter un agent
                   </v-btn>
                 </template>
                 <v-card>
@@ -31,40 +31,146 @@
                   </v-card-title>
 
                   <v-card-text>
-                    <v-container>
+                    <v-container fluid fill-height>
+                      <div class="d-flex">
+                        <v-card-title
+                          class="w-100 card-title mb-2 justify-center"
+                        >
+                          {{ $t("title.register") }}
+                        </v-card-title>
+                      </div>
+                      <v-form @submit.prevent="submit">
+                        <v-row>
+                          <v-alert v-if="message" type="error">{{
+                            message
+                          }}</v-alert>
+
+                          <v-col cols="12" sm="6" md="6">
+                            <v-text-field
+                              :label="$t('auth.firstname')"
+                              prepend-icon="mdi-account"
+                              v-model="editedItem.firstname"
+                              required
+                              @blur="$v.editedItem.firstname.$touch()"
+                              :error-messages="firstNameErrors"
+                            ></v-text-field>
+                          </v-col>
+
+                          <v-col cols="12" sm="6" md="6">
+                            <v-text-field
+                              :label="$t('auth.lastname')"
+                              prepend-icon="mdi-account"
+                              v-model="editedItem.lastname"
+                              @blur="$v.editedItem.lastname.$touch()"
+                              required
+                              :error-messages="lastNameErrors"
+                            ></v-text-field>
+                          </v-col>
+                          <v-col cols="12">
+                            <v-text-field
+                              :label="$t('auth.email')"
+                              prepend-icon="mdi-email"
+                              v-model="editedItem.email"
+                              @blur="$v.editedItem.email.$touch()"
+                              required
+                              :error-messages="emailErrors"
+                            ></v-text-field>
+                          </v-col>
+                          <v-col cols="12">
+                            <vue-phone-number-input
+                              class="mt-4 mb-4"
+                              default-country-code="CM"
+                              required
+                              @blur="$v.editedItem.phonenumber.$touch()"
+                              v-model="editedItem.phonenumber"
+                              :error-messages="phonenumberErrors"
+                            />
+                          </v-col>
+                          <v-col cols="12">
+                            <v-select
+                              required
+                              v-model="editedItem.homecountry"
+                              @blur="$v.editedItem.homecountry.$touch()"
+                              :items="countries"
+                              :label="$t('auth.homecountry')"
+                              :error-messages="homecountryErrors"
+                              item-text="nom"
+                              item-value="nom"
+                            ></v-select>
+                          </v-col>
+                          <v-col cols="12">
+                            <v-text-field
+                              :label="$t('auth.password')"
+                              type="password"
+                              v-model="editedItem.password"
+                              @blur="$v.editedItem.password.$touch()"
+                              required
+                              :error-messages="passwordErrors"
+                            ></v-text-field>
+                          </v-col>
+
+                          <!-- <v-col cols="12">
+                            <v-text-field
+                              :label="$t('auth.password_confirmation')"
+                              type="password"
+                              v-model="editedItem.password_confirmation"
+                              required
+                              @blur="$v.editedItem.password_confirmation.$touch()"
+                              :error-messages="verifyErrors"
+                            ></v-text-field>
+                          </v-col> -->
+                          <v-col>
+                            <v-select
+                              class="d-flex ml-auto"
+                              cols="12"
+                              v-model="editedItem.roles"
+                              :items="roles_items"
+                              filled
+                              @blur="$v.editedItem.roles.$touch()"
+                              required
+                              label="Role"
+                              :error-messages="roleErrors"
+                              multiple
+                            ></v-select>
+                          </v-col>
+                          <v-col class="d-flex ml-auto" cols="12">
+                            <div class="text-center">
+                              <v-btn
+                                :loading="loading"
+                                color="primary"
+                                large
+                                type="submit"
+                                text
+                                rounded
+                              >
+                                {{ $t("btn.register") }}</v-btn
+                              >
+                            </div>
+                          </v-col>
+                        </v-row>
+                      </v-form>
+                    </v-container>
+                    <!-- <v-container>
                       <v-row>
                         <v-col cols="12" sm="6" md="4">
                           <v-text-field
                             v-model="editedItem.name"
-                            label="Dessert name"
+                            label="Nom"
                           ></v-text-field>
                         </v-col>
-                        <v-col cols="12" sm="6" md="4">
-                          <v-text-field
-                            v-model="editedItem.calories"
-                            label="Calories"
-                          ></v-text-field>
+                        <v-col cols="12" sm="8" md="8">
+                          <v-select
+                          cols="12"
+                          v-model="editedItem.roles"
+                          :items="roles_items"
+                          filled
+                          label="Role"
+                          multiple
+                        ></v-select>
                         </v-col>
-                        <v-col cols="12" sm="6" md="4">
-                          <v-text-field
-                            v-model="editedItem.fat"
-                            label="Fat (g)"
-                          ></v-text-field>
-                        </v-col>
-                        <v-col cols="12" sm="6" md="4">
-                          <v-text-field
-                            v-model="editedItem.carbs"
-                            label="Carbs (g)"
-                          ></v-text-field>
-                        </v-col>
-                        <v-col cols="12" sm="6" md="4">
-                          <v-text-field
-                            v-model="editedItem.protein"
-                            label="Protein (g)"
-                          ></v-text-field>
-                        </v-col>
+                        
                       </v-row>
-                    </v-container>
+                    </v-container> -->
                   </v-card-text>
 
                   <v-card-actions>
@@ -80,9 +186,9 @@
               </v-dialog>
               <v-dialog v-model="dialogDelete" max-width="500px">
                 <v-card>
-                  <v-card-title class="text-h5"
-                    >Are you sure you want to delete this item?</v-card-title
-                  >
+                  <v-card-title class="text-h5">{{
+                    $t("validations.confirmation_delete")
+                  }}</v-card-title>
                   <v-card-actions>
                     <v-spacer></v-spacer>
                     <v-btn color="blue darken-1" text @click="closeDelete"
@@ -113,50 +219,168 @@
 </template>
 <script>
 import Dashboard from "../Dashboard.vue";
+import VuePhoneNumberInput from "vue-phone-number-input";
+import "vue-phone-number-input/dist/vue-phone-number-input.css";
+import { mapGetters } from "vuex";
+import { validationMixin } from "vuelidate";
+import {
+  required,
+  email,
+  minLength,
+  maxLength,
+  sameAs,
+  helpers,
+} from "vuelidate/lib/validators";
+import i18n from "../../i18n";
+const nameRegex = helpers.regex("alphaNum", /^(?![0-9]+$)[A-Za-z0-9_-]{1,30}$/);
+
 export default {
   name: "UserList",
+   mixins: [validationMixin],
+  validations: {
+    editedItem :{
+      email: { required, email },
+      password: { required, minLength: minLength(8), maxLength: maxLength(16) },
+      firstname: { required, nameRegex },
+      lastname: { required, nameRegex },
+      homecountry: { required },
+      phonenumber: { required },
+      roles : { required},
+    // password_confirmation: {
+    //   required,
+    //   sameAs: sameAs(function () {
+    //     return this.password;
+    //   }),
+    // },
+    }
+  
+  },
   components: {
     "dashboard-component": Dashboard,
+     "vue-phone-number-input": VuePhoneNumberInput,
   },
-
+ watch: {
+    registered(value, oldvalue) {
+      if (value === true) {
+        this.$store.dispatch("clear");
+        // this.$router.push("/confirm");
+      }
+    },
+  },
   data: () => ({
+    roles_items:null,
+    errorMessages: {},
+    loading: false,
+    message: null,
     dialog: false,
     dialogDelete: false,
     headers: [
       {
-        text: "Dessert (100g serving)",
+        text: "Name",
         align: "start",
-        sortable: false,
         value: "name",
       },
-      { text: "Calories", value: "calories" },
-      { text: "Fat (g)", value: "fat" },
-      { text: "Carbs (g)", value: "carbs" },
-      { text: "Protein (g)", value: "protein" },
-      { text: "Actions", value: "actions", sortable: false },
+      { text: "Role", value: "roles" },
+      { text: "Actions", value: "actions" },
     ],
-    desserts: [],
+    agents: [],
     editedIndex: -1,
     editedItem: {
-      name: "",
-      calories: 0,
-      fat: 0,
-      carbs: 0,
-      protein: 0,
+      roles:null,
+      roles_value:null,
+      firstname: null,
+      lastname: null,
+      phonenumber: null,
+      email: null,
+      homecountry: null,
+      password: null,
+      // password_confirmation: null,
+     
     },
     defaultItem: {
-      name: "",
-      calories: 0,
-      fat: 0,
-      carbs: 0,
-      protein: 0,
+     roles:null,
+      roles_value:null,
+      firstname: null,
+      lastname: null,
+      phonenumber: null,
+      email: null,
+      homecountry: null,
+      password: null,
+      password_confirmation: null,
     },
   }),
 
   computed: {
     formTitle() {
-      return this.editedIndex === -1 ? "New Item" : "Edit Item";
+      return this.editedIndex === -1 ? "New Agent" : "Edit Agent";
     },
+
+    // verifyErrors() {
+    //   const errors = [];
+    //   if (!this.$v.editedItem.password_confirmation.$dirty) return errors;
+    //   !this.$v.editedItem.password_confirmation.required &&
+    //     errors.push(i18n.t("validations.confirm_password"));
+    //   if (!this.$v.editedItem.password_confirmation.sameAs)
+    //     errors.push(i18n.t("validations.match_password"));
+    //   return errors;
+    // },
+    passwordErrors() {
+      const errors = [];
+      if (!this.$v.editedItem.password.$dirty) return errors;
+      if (!this.$v.editedItem.password.minLength)
+        errors.push(i18n.t("validations.min_caracter"));
+      !this.$v.editedItem.password.required &&
+        errors.push(i18n.t("validations.required_password"));
+      return errors;
+    },
+    emailErrors() {
+      const errors = [];
+      if (!this.$v.editedItem.email.$dirty) return errors;
+      !this.$v.editedItem.email.email && errors.push(i18n.t("validations.valid_email"));
+      !this.$v.editedItem.email.required &&
+        errors.push(i18n.t("validations.required_email"));
+      return errors;
+    },
+    firstNameErrors() {
+      const errors = [];
+      if (!this.$v.editedItem.firstname.$dirty) return errors;
+      !this.$v.editedItem.firstname.required &&
+        errors.push(i18n.t("validations.required_firstname"));
+      !this.$v.editedItem.firstname.nameRegex &&
+        errors.push(i18n.t("validations.caracter_firstname"));
+      return errors;
+    },
+    lastNameErrors() {
+      const errors = [];
+      if (!this.$v.editedItem.lastname.$dirty) return errors;
+      !this.$v.editedItem.lastname.required &&
+        errors.push(i18n.t("validations.required_lastname"));
+      !this.$v.editedItem.lastname.nameRegex &&
+        errors.push(i18n.t("validations.caracter_lastname"));
+      return errors;
+    },
+    phonenumberErrors() {
+      const errors = [];
+      if (!this.$v.editedItem.phonenumber.$dirty) return errors;
+      !this.$v.editedItem.phonenumber.required &&
+        errors.push(i18n.t("validations.required_phonenumber"));
+      return errors;
+    },
+    homecountryErrors() {
+      const errors = [];
+      if (!this.$v.editedItem.homecountry.$dirty) return errors;
+      !this.$v.editedItem.homecountry.required &&
+        errors.push(i18n.t("validations.required_homecountry"));
+      return errors;
+    },
+     roleErrors() {
+      const errors = [];
+      if (!this.$v.editedItem.roles.$dirty) return errors;
+      !this.$v.editedItem.roles.required &&
+        errors.push(i18n.t("validations.role_required"));
+      return errors;
+    },
+    ...mapGetters(["errors", "registered", "countries", "langLocal"]),
   },
 
   watch: {
@@ -170,98 +394,44 @@ export default {
 
   created() {
     this.initialize();
+    this.getRoles();
   },
 
   methods: {
     initialize() {
-      this.desserts = [
+      this.agents = [
         {
-          name: "Frozen Yogurt",
-          calories: 159,
-          fat: 6.0,
-          carbs: 24,
-          protein: 4.0,
+          name: "Toto 1",
+          roles: ["Agent niveau 1", "Agent niveau2"],
         },
         {
-          name: "Ice cream sandwich",
-          calories: 237,
-          fat: 9.0,
-          carbs: 37,
-          protein: 4.3,
+          name: "Toto 1",
+          roles: ["Agent niveau 1"],
         },
         {
-          name: "Eclair",
-          calories: 262,
-          fat: 16.0,
-          carbs: 23,
-          protein: 6.0,
-        },
-        {
-          name: "Cupcake",
-          calories: 305,
-          fat: 3.7,
-          carbs: 67,
-          protein: 4.3,
-        },
-        {
-          name: "Gingerbread",
-          calories: 356,
-          fat: 16.0,
-          carbs: 49,
-          protein: 3.9,
-        },
-        {
-          name: "Jelly bean",
-          calories: 375,
-          fat: 0.0,
-          carbs: 94,
-          protein: 0.0,
-        },
-        {
-          name: "Lollipop",
-          calories: 392,
-          fat: 0.2,
-          carbs: 98,
-          protein: 0,
-        },
-        {
-          name: "Honeycomb",
-          calories: 408,
-          fat: 3.2,
-          carbs: 87,
-          protein: 6.5,
-        },
-        {
-          name: "Donut",
-          calories: 452,
-          fat: 25.0,
-          carbs: 51,
-          protein: 4.9,
-        },
-        {
-          name: "KitKat",
-          calories: 518,
-          fat: 26.0,
-          carbs: 65,
-          protein: 7,
+          name: "Toto 1",
+          roles: ["Agent niveau 1"],
         },
       ];
     },
-
+    async getRoles() {
+      this.roles_items = ["agent1", "agent2"];
+    },
     editItem(item) {
-      this.editedIndex = this.desserts.indexOf(item);
+      this.editedIndex = this.agents.indexOf(item);
       this.editedItem = Object.assign({}, item);
+      console.log(item);
       this.dialog = true;
     },
 
     deleteItem(item) {
-      this.editedIndex = this.desserts.indexOf(item);
+      this.editedIndex = this.agents.indexOf(item);
       this.editedItem = Object.assign({}, item);
       this.dialogDelete = true;
     },
 
     deleteItemConfirm() {
-      this.desserts.splice(this.editedIndex, 1);
+      this.agents.splice(this.editedIndex, 1);
       this.closeDelete();
     },
 
@@ -283,11 +453,36 @@ export default {
 
     save() {
       if (this.editedIndex > -1) {
-        Object.assign(this.desserts[this.editedIndex], this.editedItem);
+        Object.assign(this.agents[this.editedIndex], this.editedItem);
       } else {
         this.desserts.push(this.editedItem);
       }
       this.close();
+    },
+       async submit() {
+      this.isLoading = true;
+      this.$v.$touch();
+      const data = new FormData();
+      data.append("prenom", this.editedItem.firstname);
+      data.append("nom", this.editedItem.lastname);
+      data.append("email", this.editedItem.email);
+      data.append("password", this.editedItem.password);
+      // data.append("password_confirmation", this.password_confirmation);
+      data.append("phonenumber", this.editedItem.phonenumber);
+      data.append("paysorigine", this.editedItem.homecountry);
+
+      console.log(data);
+      if (!this.$v.$invalid) {
+        await this.$store
+          .dispatch("register", data)
+          .then((response) => {
+            this.isLoading = false;
+          })
+          .catch((error) => {
+            this.loading = false;
+            console.error(error);
+          });
+      }
     },
   },
 };

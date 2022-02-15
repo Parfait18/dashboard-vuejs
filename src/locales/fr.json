@@ -5,7 +5,9 @@
         "profile": "Compte",
         "dashboard": "Tableau de bord",
         "not_found": "Non trouvé",
-        "createrole": "createrole"
+        "createrole": "createrole",
+        "listagent":"list-agent",
+        "listdemands":"list-demandes"
       },
       "auth": {
         "password": "Mot de passe",
@@ -41,8 +43,10 @@
        "caracter_lastname":"Le  nom doit aussi contenir des caractères",
         "leveltype":"Le type de niveau est obligatoire",
         "required_permissions": "Vous devez choisir au moins une permission",
-        "required_role": "Le nom du rôle est obligatoire",
-        "rolereguex":"Le nom du rôle doit aussi contenir des lettres"
+        "required_role_name": "Le nom du rôle est obligatoire",
+        "rolereguex":"Le nom du rôle doit aussi contenir des lettres",
+        "role_required" :"Le role est obligatoire",
+        "confirmation_delete":"Êtes vous sûre de vouloir supprimer cet élément"
       },
       "title":{
         "login":"Connectez vous",
@@ -51,6 +55,12 @@
       },
      "fields":{
         "role":"Rôle"
+      },
+      "headers":{
+        "fullname": "Nom Complet",
+        "country":"Pays",
+        "visatype": "Type de visa",
+        "statut": "Statut de la demande"
       }
 
   }

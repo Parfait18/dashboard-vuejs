@@ -1,4 +1,5 @@
 <template>
+ <dashboard-component>
   <v-container fluid fill-height>
     <v-layout align-center justify-center>
       <v-flex>
@@ -66,9 +67,11 @@
       </v-flex>
     </v-layout>
   </v-container>
+</dashboard-component>
 </template>
 
 <script>
+import Dashboard from "../Dashboard.vue";
 import i18n from "../../i18n";
 import { mapGetters } from "vuex";
 import { validationMixin } from "vuelidate";
@@ -85,10 +88,13 @@ export default {
     role: { required, roleReguex },
     permissions: { required },
   },
+  components: {
+    "dashboard-component": Dashboard,
+  },
   data() {
     return {
       isLOading: false,
-      role: "agent niveau1",
+      role: "agent_niveau1",
       permissions: [],
     };
   },

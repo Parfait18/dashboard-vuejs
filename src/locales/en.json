@@ -4,7 +4,9 @@
     "profile": "Profile",
     "dashboard": "Dashboard",
     "not_found": "Not found",
-    "createrole": "createrole"
+    "createrole": "createrole",
+    "listagent":"list-agent",
+    "listdemands":"list-demands"
   },
   "auth": {
     "username": "Username",
@@ -41,8 +43,10 @@
     "caracter_lastname": "Last name must also contain characters",
     "leveltype": "Level type is required",
     "required_permissions": "Need to check at least one permission",
-    "required_role": "Role name is required",
-    "rolereguex":"Role name must also contain letters"
+    "required_role_name": "Role name is required",
+    "rolereguex":"Role name must also contain letters",
+    "role_required" :"The role is required",
+    "confirmation_delete":"Are you sure you want to delete this item?"
   },
   "title": {
     "login": "Sign In",
@@ -51,5 +55,11 @@
   },
   "fields": {
     "role": "Role"
+  },
+  "headers":{
+    "fullname": "Full name",
+    "country":"Country",
+    "visatype": "Type of visa",
+    "statut": "Status"
   }
 }

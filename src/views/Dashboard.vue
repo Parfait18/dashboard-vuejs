@@ -93,7 +93,7 @@
                 <a href="#" class="nav-link">
                   <i class="fa-solid fa-users-gear"></i>
                   <p>
-                    User Controls
+                    User and Role Controls
                     <i class="fas fa-angle-left right"></i>
                   </p>
                 </a>
@@ -102,6 +102,14 @@
                     <a href="/list-agent" class="nav-link">
                       <i class="far fa-circle nav-icon"></i>
                       <p>Liste des agents</p>
+                    </a>
+                  </li>
+                </ul>
+                <ul class="nav nav-treeview">
+                  <li class="nav-item">
+                    <a href="/create-role" class="nav-link">
+                      <i class="far fa-circle nav-icon"></i>
+                      <p>Céer un rôle</p>
                     </a>
                   </li>
                 </ul>

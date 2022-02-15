@@ -30,11 +30,11 @@ const routes = [
 
   },
   {
-    path: "/dashboard/",
+    path: "/dashboard",
     name: "dashboard",
     component: Dashboard,
     meta: {
-      title: i18n.t("routes.createrole"),
+      title: i18n.t("routes.dashboard"),
       middleware: 'admin'
     },
   },
@@ -70,7 +70,7 @@ const routes = [
     name: "listdemands",
     component: ListDemands,
     meta: {
-      title: i18n.t("routes.Listdemands"),
+      title: i18n.t("routes.listdemands"),
       middleware: 'admin'
     }
   }
@@ -82,66 +82,28 @@ let router = new VueRouter({
   base: process.env.BASE_URL,
   routes
 })
-router.beforeEach((to, from, next) => {
-    document.title = `E-Visa - ${to.meta.title}`
-    store.dispatch('getUser');
-    if(to.meta.middleware=="admin"){
-     console.log("admin middlewar")
-      if(store.getters.authenticated){
-        console.log("connecté")
-      }else{
-        console.log("non connecté")
-      }
-     next()
-    }else if(to.meta.middleware=="guest"){
-      console.log("guest middlewar")
-      if(store.getters.authenticated){
-        console.log("connecté")
-      }else{
-        console.log("non connecté")
-      }
-      next()
-    }else{
-      next()
-    }
-  }
-);
 // router.beforeEach((to, from, next) => {
-//   document.title = `E-Visa - ${to.meta.title}`
-//   store.dispatch('getUser');
-//   if(to.meta.middleware=="admin"){
-//     if(store.getters.authenticated){
-//       console.log(" connecté")
-//       next({name:"dashboard"})
-
+//     document.title = `E-Visa - ${to.meta.title}`
+//     store.dispatch('getUser');
+//     if(to.meta.middleware=="admin"){
+//       if(store.getters.authenticated){
+//         next()
+//       }else{
+//         console.log("non connecté")
+//         next({name:'login'})
+//       }
+    
+//     }else if(to.meta.middleware=="guest"){
+//       if(store.getters.authenticated){
+//         next({name:'dashboard'})
+//       }else{
+//         next()
+//       }
+//       next()
 //     }else{
-//        console.log(" non connecté")
-//       next({name:"login"})
-//     }  
-//   }else{
-//     next()
+//       next()
+//     }
 //   }
-//   if(to.meta.middleware=="admin"){
-//     if(store.getters.authenticated){
-//       console.log(" connecté")
-//       next({name:"dashboard"})
-
-//     }else{
-//        console.log(" non connecté")
-//       next({name:"login"})
-//     }  
-//   }
-//   if(to.meta.middleware=="guest"){
-//     if(store.getters.authenticated){
-//       console.log("je suis connecté")
-//       next({name:"dashboard"})
-
-//     }else{
-//        console.log("je suis non connecté")
-//       next({name:"login"})
-//     }  
-//   }
-// })
-
+// );
 
 export default router
