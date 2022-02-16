@@ -7,7 +7,11 @@ import i18n from './i18n'
 import 'material-design-icons-iconfont/dist/material-design-icons.css'
 import TheHeader from './components/TheHeader'
 import TheFooter from './components/TheFooter'
+import TheSideBar from './components/TheSideBar'
 import FlagIcon from 'vue-flag-icon'
+import 'viewerjs/dist/viewer.css'
+import VueViewer from 'v-viewer'
+
 import axios from 'axios';
 Vue.prototype.$http = axios;
 
@@ -28,10 +32,11 @@ axios.interceptors.response.use(function (response) {
 
 Vue.config.productionTip = false
 Vue.use(FlagIcon);
-
+Vue.use(VueViewer)
 
 Vue.component('TheHeader', TheHeader)
 Vue.component('TheFooter', TheFooter)
+Vue.component('TheSideBar', TheSideBar)
 
 new Vue({
   router,

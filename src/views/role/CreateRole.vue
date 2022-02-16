@@ -1,9 +1,9 @@
 <template>
- <dashboard-component>
+ <MainLayout-component>
   <v-container fluid fill-height>
     <v-layout align-center justify-center>
       <v-flex>
-        <div class="row justify-content-center">
+        <div class="mt-5 row justify-content-center">
           <div class="col-md-6 col-lg-6">
             <div class="">
               <v-card class="login-wrap p-5 p-md-5">
@@ -32,8 +32,9 @@
                             v-for="role in role_items"
                             :key="role.id"
                             cols="12"
-                            sm="4"
-                            md="4"
+                            sm="6"
+                            md="6"
+                            
                           >
                             <v-checkbox
                               v-model="permissions"
@@ -67,11 +68,11 @@
       </v-flex>
     </v-layout>
   </v-container>
-</dashboard-component>
+</MainLayout-component>
 </template>
 
 <script>
-import Dashboard from "../Dashboard.vue";
+import MainLayout from "../MainLayout.vue";
 import i18n from "../../i18n";
 import { mapGetters } from "vuex";
 import { validationMixin } from "vuelidate";
@@ -89,7 +90,7 @@ export default {
     permissions: { required },
   },
   components: {
-    "dashboard-component": Dashboard,
+    "MainLayout-component": MainLayout,
   },
   data() {
     return {
@@ -127,20 +128,17 @@ export default {
     this.role_items = [
       {
         id: 0,
-        name: "Valider demande",
+        name: "Validation niveau 1",
       },
       {
         id: 1,
-        name: "Créer demande",
+        name: "Validation niveau 2",
       },
       {
         id: 3,
         name: "Rejeter demande",
       },
-      {
-        id: 4,
-        name: "Supprimer demande",
-      },
+     
     ];
   },
   watch: {

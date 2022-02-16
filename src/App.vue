@@ -1,6 +1,7 @@
 <template>
   <v-app>
-  <TheHeader></TheHeader>
+  <TheHeader/> 
+  <TheSideBar/> 
     <v-main>
       <router-view/>
     </v-main>  

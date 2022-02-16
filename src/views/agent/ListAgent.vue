@@ -1,19 +1,31 @@
 <template>
-  <dashboard-component>
-    <div class="row justify-content-center">
+<MainLayout-component>
+<div class="row justify-content-center">
       <div class="col-md-12 col-lg-12">
         <v-data-table
           :headers="headers"
           :items="agents"
-          sort-by="calories"
-          class="elevation-1 p-2"
+           :sort-by.sync="sortBy"
+            :sort-desc.sync="sortDesc"
+            :items-per-page="5"
+            class="elevation-2"
+            :search="search"
         >
           <template v-slot:top>
             <v-toolbar flat>
               <v-toolbar-title>Liste des agents</v-toolbar-title>
               <v-divider class="mx-4" inset vertical></v-divider>
-              <v-spacer></v-spacer>
-              <v-dialog v-model="dialog" max-width="500px">
+                  
+            <v-text-field
+              v-model="search"
+              append-icon="mdi-magnify"
+              :label="$t('search_text')"
+              single-line
+              hide-details
+              class="mr-5"
+            ></v-text-field>
+               
+              <v-dialog v-model="dialog" style='z-index:1500;' max-width="500px">
                 <template v-slot:activator="{ on, attrs }">
                   <v-btn
                     color="primary"
@@ -26,10 +38,6 @@
                   </v-btn>
                 </template>
                 <v-card>
-                  <v-card-title>
-                    <span class="text-h5">{{ formTitle }}</span>
-                  </v-card-title>
-
                   <v-card-text>
                     <v-container fluid fill-height>
                       <div class="d-flex">
@@ -133,20 +141,7 @@
                               multiple
                             ></v-select>
                           </v-col>
-                          <v-col class="d-flex ml-auto" cols="12">
-                            <div class="text-center">
-                              <v-btn
-                                :loading="loading"
-                                color="primary"
-                                large
-                                type="submit"
-                                text
-                                rounded
-                              >
-                                {{ $t("btn.register") }}</v-btn
-                              >
-                            </div>
-                          </v-col>
+                         
                         </v-row>
                       </v-form>
                     </v-container>
@@ -178,9 +173,16 @@
                     <v-btn color="blue darken-1" text @click="close">
                       Cancel
                     </v-btn>
-                    <v-btn color="blue darken-1" text @click="save">
-                      Save
-                    </v-btn>
+                     <v-btn
+                                :loading="loading"
+                                color="primary"
+                                large
+                                type="submit"
+                                text
+                                @click="save"
+                              >
+                                {{ $t("btn.register") }}</v-btn
+                              >
                   </v-card-actions>
                 </v-card>
               </v-dialog>
@@ -194,9 +196,9 @@
                     <v-btn color="blue darken-1" text @click="closeDelete"
                       >Cancel</v-btn
                     >
-                    <v-btn color="blue darken-1" text @click="deleteItemConfirm"
+                    <!-- <v-btn color="blue darken-1" text @click="deleteItemConfirm"
                       >OK</v-btn
-                    >
+                    > -->
                     <v-spacer></v-spacer>
                   </v-card-actions>
                 </v-card>
@@ -215,10 +217,13 @@
         </v-data-table>
       </div>
     </div>
-  </dashboard-component>
+
+</MainLayout-component>
+    
+
 </template>
 <script>
-import Dashboard from "../Dashboard.vue";
+import MainLayout from "../MainLayout.vue";
 import VuePhoneNumberInput from "vue-phone-number-input";
 import "vue-phone-number-input/dist/vue-phone-number-input.css";
 import { mapGetters } from "vuex";
@@ -256,7 +261,7 @@ export default {
   
   },
   components: {
-    "dashboard-component": Dashboard,
+    "MainLayout-component": MainLayout,
      "vue-phone-number-input": VuePhoneNumberInput,
   },
  watch: {
@@ -268,6 +273,9 @@ export default {
     },
   },
   data: () => ({
+    search:null,
+     sortBy: "created_at",
+      sortDesc: true,
     roles_items:null,
     errorMessages: {},
     loading: false,

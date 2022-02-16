@@ -5,8 +5,8 @@
       <v-btn @click="changeLanguage(item.id)" id="lang-btn" text class="white--text"  v-for="item in languages" :key="item.id">{{ item.langue}}<flag :iso="item.flag" class="white-text" :class="['m-2' ]"/> </v-btn>   
     </div>
     </div>
-        <!-- Navbar -->
-      <nav v-if="authenticated" class="main-header navbar navbar-expand navbar-white navbar-light">
+        <!-- Navbar  v-if="authenticated"-->
+      <nav class="main-header navbar navbar-expand navbar-white navbar-light">
         <!-- Left navbar links -->
         <ul class="navbar-nav">
           <li class="nav-item">

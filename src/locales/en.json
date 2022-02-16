@@ -5,8 +5,8 @@
     "dashboard": "Dashboard",
     "not_found": "Not found",
     "createrole": "createrole",
-    "listagent":"list-agent",
-    "listdemands":"list-demands"
+    "listagent": "list-agent",
+    "listdemands": "list-demands"
   },
   "auth": {
     "username": "Username",
@@ -26,7 +26,11 @@
   "btn": {
     "login": "Login",
     "register": "Register",
-    "saverole": "Save role"
+    "saverole": "Save role",
+    "next": "Next",
+    "return": "Return",
+    "valide": "Valide",
+    "show":"Show"
   },
   "validations": {
     "required_password": "Password is required",
@@ -44,21 +48,40 @@
     "leveltype": "Level type is required",
     "required_permissions": "Need to check at least one permission",
     "required_role_name": "Role name is required",
-    "rolereguex":"Role name must also contain letters",
-    "role_required" :"The role is required",
-    "confirmation_delete":"Are you sure you want to delete this item?"
+    "rolereguex": "Role name must also contain letters",
+    "role_required": "The role is required",
+    "confirmation_delete": "Are you sure you want to delete this item?"
   },
   "title": {
     "login": "Sign In",
     "register": "Register new User",
-    "newrole": "Create new role"
+    "newrole": "Create new role",
+    "demand_edit": "Edit demande",
+    "personal_info": "Personals Informations",
+    "visa_info": "Visa Informations",
+    "piecesjointes": "Attachments"
   },
   "fields": {
-    "role": "Role"
+    "role": "Rôle",
+    "firstname": "First name",
+    "lastname": "Last name",
+    "gender": "Gender",
+    "birthdate": "Birthdate",
+    "visatype": "VIsa type",
+    "homecountry": "Home country",
+    "motif": "Your reason for travel",
+    "ordremission": "Your mission order ",
+    "nationality": "Nationality",
+    "expiredate": "Passport expiration date",
+    "phonenumber": "Phone numer",
+    "copypassport": "Passport copy",
+    "justificatiflogement": "Justificatif de logement",
+    "passportnumber": "Your proof of accommodation"
   },
-  "headers":{
-    "fullname": "Full name",
-    "country":"Country",
+  "headers": {
+    "lastname": "Lastname",
+    "firstname": "Firstname",
+    "country": "Country",
     "visatype": "Type of visa",
     "statut": "Status"
   }
