@@ -78,7 +78,7 @@ import { validationMixin } from "vuelidate";
 import { required, helpers } from "vuelidate/lib/validators";
 const roleReguex = helpers.regex(
   "alphaNum",
-  /^(?![0-9]+$)[A-Za-z0-9_-]{1,30}$/
+  /^(?![0-9]+$)[A-Za-z0-9_ -]{1,30}$/
 );
 
 export default {
@@ -94,7 +94,7 @@ export default {
   data() {
     return {
       isLOading: false,
-      role: "agent_niveau1",
+      role: "agent niveau1",
       permissions: [],
     };
   },

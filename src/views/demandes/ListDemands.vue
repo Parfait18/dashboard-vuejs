@@ -465,7 +465,21 @@ mixins: [validationMixin],
       passportnumber: null
     },
     defaultItem: {
-    
+        firstname: null,
+      lastname:null,
+      gender: null,
+      birthdate: null,
+      visatype:null,
+      homecountry:null,
+      motif:null,
+      ordremission: null,
+      nationality: null,
+      expiredate:null,
+      phonenumber: null,
+      copypassport:null,
+      justificatiflogement:null,
+      copypassportfilename:null,
+      passportnumber: null
     },
   }),
 
