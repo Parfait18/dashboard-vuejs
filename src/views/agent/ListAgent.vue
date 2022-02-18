@@ -3,7 +3,7 @@
 <div class="row justify-content-center">
       <div class="col-md-12 col-lg-12">
         <v-data-table
-          :headers="headers"
+          :headers="getHeaders"
           :items="agents"
            :sort-by.sync="sortBy"
             :sort-desc.sync="sortDesc"
@@ -13,13 +13,13 @@
         >
           <template v-slot:top>
             <v-toolbar flat>
-              <v-toolbar-title>Liste des agents</v-toolbar-title>
+              <v-toolbar-title>{{ $t('title.agent_list')}}</v-toolbar-title>
               <v-divider class="mx-4" inset vertical></v-divider>
                   
             <v-text-field
               v-model="search"
               append-icon="mdi-magnify"
-              :label="$t('search_text')"
+              :label="$t('fields.search_text')"
               single-line
               hide-details
               class="mr-5"
@@ -34,7 +34,7 @@
                     v-bind="attrs"
                     v-on="on"
                   >
-                    Ajouter un agent
+                   {{ $t('btn.new_agent') }}
                   </v-btn>
                 </template>
                 <v-card>
@@ -117,16 +117,7 @@
                             ></v-text-field>
                           </v-col>
 
-                          <!-- <v-col cols="12">
-                            <v-text-field
-                              :label="$t('auth.password_confirmation')"
-                              type="password"
-                              v-model="editedItem.password_confirmation"
-                              required
-                              @blur="$v.editedItem.password_confirmation.$touch()"
-                              :error-messages="verifyErrors"
-                            ></v-text-field>
-                          </v-col> -->
+                     
                           <v-col>
                             <v-select
                               class="d-flex ml-auto"
@@ -145,33 +136,13 @@
                         </v-row>
                       </v-form>
                     </v-container>
-                    <!-- <v-container>
-                      <v-row>
-                        <v-col cols="12" sm="6" md="4">
-                          <v-text-field
-                            v-model="editedItem.name"
-                            label="Nom"
-                          ></v-text-field>
-                        </v-col>
-                        <v-col cols="12" sm="8" md="8">
-                          <v-select
-                          cols="12"
-                          v-model="editedItem.roles"
-                          :items="roles_items"
-                          filled
-                          label="Role"
-                          multiple
-                        ></v-select>
-                        </v-col>
-                        
-                      </v-row>
-                    </v-container> -->
+                  
                   </v-card-text>
 
                   <v-card-actions>
                     <v-spacer></v-spacer>
                     <v-btn color="blue darken-1" text @click="close">
-                      Cancel
+                     {{$t("btn.cancel")}}
                     </v-btn>
                      <v-btn
                                 :loading="loading"
@@ -194,18 +165,16 @@
                   <v-card-actions>
                     <v-spacer></v-spacer>
                     <v-btn color="blue darken-1" text @click="closeDelete"
-                      >Cancel</v-btn
+                      >{{$t("btn.cancel")}}</v-btn
                     >
-                    <!-- <v-btn color="blue darken-1" text @click="deleteItemConfirm"
-                      >OK</v-btn
-                    > -->
+                   
                     <v-spacer></v-spacer>
                   </v-card-actions>
                 </v-card>
               </v-dialog>
             </v-toolbar>
           </template>
-          <template v-slot:item.actions="{ item }">
+          <template v-slot:[`item.actions`]="{ item }">
             <v-icon small class="mr-2" @click="editItem(item)">
               mdi-pencil
             </v-icon>
@@ -251,12 +220,6 @@ export default {
       homecountry: { required },
       phonenumber: { required },
       roles : { required},
-    // password_confirmation: {
-    //   required,
-    //   sameAs: sameAs(function () {
-    //     return this.password;
-    //   }),
-    // },
     }
   
   },
@@ -282,15 +245,7 @@ export default {
     message: null,
     dialog: false,
     dialogDelete: false,
-    headers: [
-      {
-        text: "Name",
-        align: "start",
-        value: "name",
-      },
-      { text: "Role", value: "roles" },
-      { text: "Actions", value: "actions" },
-    ],
+    headers:[],
     agents: [],
     editedIndex: -1,
     editedItem: {
@@ -301,9 +256,7 @@ export default {
       phonenumber: null,
       email: null,
       homecountry: null,
-      password: null,
-      // password_confirmation: null,
-     
+      password: null
     },
     defaultItem: {
      roles:null,
@@ -319,19 +272,24 @@ export default {
   }),
 
   computed: {
-    formTitle() {
-      return this.editedIndex === -1 ? "New Agent" : "Edit Agent";
+  
+     getHeaders() {
+        this.headers = [
+          {
+          text: i18n.t("headers.firstname"),
+          align: "center",
+          value: "firstname",
+          },
+          {
+          text: i18n.t("headers.lastname"),
+          align: "center",
+          value: "lastname",
+          },
+          { text:  i18n.t("headers.role"), value: "roles" },
+          { text: "Actions", value: "actions" },
+        ]
+          return this.headers;
     },
-
-    // verifyErrors() {
-    //   const errors = [];
-    //   if (!this.$v.editedItem.password_confirmation.$dirty) return errors;
-    //   !this.$v.editedItem.password_confirmation.required &&
-    //     errors.push(i18n.t("validations.confirm_password"));
-    //   if (!this.$v.editedItem.password_confirmation.sameAs)
-    //     errors.push(i18n.t("validations.match_password"));
-    //   return errors;
-    // },
     passwordErrors() {
       const errors = [];
       if (!this.$v.editedItem.password.$dirty) return errors;
@@ -388,7 +346,7 @@ export default {
         errors.push(i18n.t("validations.role_required"));
       return errors;
     },
-    ...mapGetters(["errors", "registered", "countries", "langLocal"]),
+    ...mapGetters(["errors", "registered", "countries",]),
   },
 
   watch: {
@@ -409,15 +367,18 @@ export default {
     initialize() {
       this.agents = [
         {
-          name: "Toto 1",
+          firstname: "Toto 1",
+            lastname: "Toto 1",
           roles: ["Agent niveau 1", "Agent niveau2"],
         },
         {
-          name: "Toto 1",
+          firstname: "Toto 1",
+          lastname: "Toto 1",
           roles: ["Agent niveau 1"],
         },
         {
-          name: "Toto 1",
+           firstname: "Toto 1",
+          lastname: "Toto 1",
           roles: ["Agent niveau 1"],
         },
       ];

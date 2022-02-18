@@ -11,14 +11,15 @@ import ListDemands from '../views/demandes/ListDemands'
 Vue.use(VueRouter)
 
 const routes = [
-  // {
-  //   path: '/',
-  //   redirect: '/login',
-  //   meta: {
-  //     title: i18n.t("routes.login"),
-  //     middleware: 'guest'
-  //   }
-  // },
+  {
+    path: "/",
+    name: "home",
+    component: Dashboard,
+    meta: {
+      title: i18n.t("routes.dashboard"),
+      middleware: 'admin'
+    },
+  },
   {
     path: "/login",
     name: "login",

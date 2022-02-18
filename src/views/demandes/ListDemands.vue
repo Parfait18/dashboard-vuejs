@@ -2,7 +2,6 @@
   <MainLayout-component>
     <div class="row justify-content-center">
       <div class="mt-5 col-md-12 col-lg-12">
-           
         <v-data-table
           :headers="getHeaders"
           :items="demands"
@@ -11,26 +10,29 @@
           :sort-desc.sync="sortDesc"
           :items-per-page="5"
           class="elevation-2"
-  
         >
           <template v-slot:top>
             <v-toolbar flat>
               <v-toolbar-title>Liste des demandes</v-toolbar-title>
               <v-divider class="mx-4" inset vertical></v-divider>
-         
-             
-            <v-text-field
-              v-model="search"
-              append-icon="mdi-magnify"
-              :label="$t('search_text')"
-              single-line
-              hide-details
-            ></v-text-field>
-            <v-spacer></v-spacer>
-              <v-dialog content-class="custimize-dialog" 
-        transition="dialog-bottom-transition"
-        scrollable v-model="dialog"  style='z-index:1500;' max-width="1000px">
-                     <v-card >
+
+              <v-text-field
+                v-model="search"
+                append-icon="mdi-magnify"
+                :label="$t('fields.search_text')"
+                single-line
+                hide-details
+              ></v-text-field>
+
+              <v-dialog
+                content-class="custimize-dialog"
+                transition="dialog-bottom-transition"
+                scrollable
+                v-model="dialog"
+                style="z-index: 1500"
+                max-width="1000px"
+              >
+                <v-card>
                   <v-card-text>
                     <v-container
                       row
@@ -40,235 +42,213 @@
                     >
                       <v-flex xs12 sm12 md12 lg12 xl12>
                         <div>
+                          <v-text-field
+                            readonly
+                            v-model="editedItem.firstname"
+                            name="fristname"
+                            :label="$t('fields.firstname')"
+                          ></v-text-field>
+                          <v-text-field
+                            v-model="editedItem.lastname"
+                            readonly
+                            name="lastname"
+                            :label="$t('fields.lastname')"
+                          ></v-text-field>
+                          <v-select
+                            v-model="editedItem.gender"
+                            item-text="name"
+                            readonly
+                            :items="genders"
+                            :label="$t('fields.gender')"
+                          >
+                          </v-select>
+                          <div>
+                            <v-menu
+                              ref="menu"
+                              v-model="menu"
+                              :close-on-content-click="false"
+                              transition="scale-transition"
+                              offset-y
+                              min-width="auto"
+                            >
+                              <template v-slot:activator="{ on, attrs }">
                                 <v-text-field
-                                  v-model="editedItem.firstname"
-                                  required
-                                  @blur="$v.editedItem.firstname.$touch()"
-                                  name="fristname"
-                                  :label="$t('fields.firstname')"
-                                  :error-messages="firstnameErrors"
+                                  v-model="editedItem.birthdate"
+                                  :label="$t('fields.birthdate')"
+                                  prepend-icon="mdi-calendar"
+                                  readonly
+                                  v-bind="attrs"
+                                  v-on="on"
                                 ></v-text-field>
-                                <v-text-field
-                                  v-model="editedItem.lastname"
-                                  required
-                                  @blur="$v.editedItem.lastname.$touch()"
-                                  name="lastname"
-                                  :label="$t('fields.lastname')"
-                                  :error-messages="lastnameErrors"
-                                ></v-text-field>
-                                <v-select
-                                  v-model="editedItem.gender"
-                                  required
-                                  item-text="name"
-                                  @blur="$v.editedItem.gender.$touch()"
-                                  :items="genders"
-                                  :label="$t('fields.gender')"
-                                  :error-messages="genderErrors"
-                                >
-                                </v-select>
-                                <div>
-                                  <v-menu
-                                    ref="menu"
-                                    v-model="menu"
-                                    :close-on-content-click="false"
-                                    transition="scale-transition"
-                                    offset-y
-                                    min-width="auto"
-                                  >
-                                    <template v-slot:activator="{ on, attrs }">
-                                      <v-text-field
-                                        required
-                                        v-model="editedItem.birthdate"
-                                        @blur="$v.editedItem.birthdate.$touch()"
-                                        :label="$t('fields.birthdate')"
-                                        prepend-icon="mdi-calendar"
-                                        readonly
-                                        v-bind="attrs"
-                                        v-on="on"
-                                        :error-messages="birthdateErrors"
-                                      ></v-text-field>
-                                    </template>
-                                    <v-date-picker
-                                      v-model="editedItem.birthdate"
-                                      :active-picker.sync="activePicker"
-                                      :max="
-                                        new Date(
-                                          Date.now() -
-                                            new Date().getTimezoneOffset() *
-                                              60000
-                                        )
-                                          .toISOString()
-                                          .substr(0, 10)
-                                      "
-                                      min="1950-01-01"
-                                      @change="save_birthdate"
-                                    ></v-date-picker>
-                                  </v-menu>
-                                </div>
-                                <v-select
-                                  v-model="editedItem.nationality"
-                                  required
-                                  item-text="nationalite"
-                                  @blur="$v.editedItem.nationality.$touch()"
-                                  :items="nationalities"
-                                  filled
-                                  :label="$t('fields.nationality')"
-                                  :error-messages="nationalityErrors"
-                                >
-                                </v-select>
-                                <vue-phone-number-input
-                                class="mb-5"
-                                  default-country-code="CM"
-                                  @blur="$v.editedItem.phonenumber.$touch()"
-                                  required
-                                  v-model="editedItem.phonenumber"
-                                  :error-messages="phonenumberErrors"
-                                />
-                                <v-spacer></v-spacer>
-                                <v-select
-                                  required
-                                  v-model="editedItem.homecountry"
-                                  @blur="$v.editedItem.homecountry.$touch()"
-                                  filled
-                                  :items="countries"
-                                  :label="$t('fields.homecountry')"
-                                  :error-messages="homecountryErrors"
-                                  item-text="nom"
-                                  item-value="nom"
-                                >
-                                </v-select>
-                                <v-spacer></v-spacer>
-                                <v-select
-                                  v-model="editedItem.visatype"
-                                  item-text="designation"
-                                  item-value="id"
-                                  filled
-                                  required
-                                  @blur="$v.editedItem.visatype.$touch()"
-                                  :items="typesvisa"
-                                  :label="$t('fields.visatype')"
-                                  :error-messages="visaTypeErrors"
-                                ></v-select>
-                                <v-textarea
-                                  v-model="editedItem.motif"
-                                  filled
-                                  required
-                                  @blur="$v.editedItem.motif.$touch()"
-                                  :label="$t('fields.motif')"
-                                  auto-grow
-                                  :error-messages="motifErrors"
-                                ></v-textarea>
-                                <v-textarea
-                                  v-model="editedItem.ordremission"
-                                  filled
-                                  required
-                                  @blur="$v.editedItem.ordremission.$touch()"
-                                  :label="$t('fields.ordremission')"
-                                  auto-grow
-                                  :error-messages="ordremissionErrors"
-                                >
-                                </v-textarea>
-                                
-                                <v-text-field
-                                  v-model="editedItem.passportnumber"
-                                  required
-                                  @blur="$v.editedItem.passportnumber.$touch()"
-                                  :error-messages="passportnumberErrors"
-                                  type="text"
-                                  :label="$t('fields.passportnumber')"
-                                >
-                                </v-text-field>
-                                <v-menu
-                                  ref="expi"
-                                  v-model="expi"
-                                  :close-on-content-click="false"
-                                  transition="scale-transition"
-                                  offset-y
-                                  min-width="auto"
-                                >
-                                  <template v-slot:activator="{ on, attrs }">
-                                    <v-text-field
-                                      required
-                                      v-model="editedItem.expiredate"
-                                      @blur="$v.editedItem.expiredate.$touch()"
-                                      :label="$t('fields.expiredate')"
-                                      prepend-icon="mdi-calendar"
-                                      readonly
-                                      v-bind="attrs"
-                                      v-on="on"
-                                      :error-messages="expiredateErrors"
-                                    ></v-text-field>
-                                  </template>
-                                  <v-date-picker
-                                    v-model="editedItem.expiredate"
-                                    :active-picker.sync="activeExpirePicker"
-                                    :min="
-                                      new Date(
-                                        Date.now() -
-                                          new Date().getTimezoneOffset() * 60000
-                                      )
-                                        .toISOString()
-                                        .substr(0, 10)
-                                    "
-                                    @change="expi_save"
-                                  ></v-date-picker>
-                                </v-menu>
-                                <v-row>
-                                  <v-col cols="10">
-                                    <v-file-input
-                                      required
-                                      @blur="
-                                        $v.editedItem.copypassport.$touch()
-                                      "
-                                      v-model="editedItem.copypassport"
-                                      :label="$t('fields.copypassport')"
-                                      filled
-                                      prepend-icon="mdi-camera"
-                                      :error-messages="copypassportErrors"
-                                    ></v-file-input>
-                                  </v-col>
-                                  <v-col cols="2">
-                                     <viewer style="display: none" :images="images">
-                                        <img v-for="src in images" :key="src" :src="src">
-                                      </viewer>
-   
-                                    <v-btn
-                                      color="success"
-                                      :disabled="stepFour"
-                                      @click="show"
-                                      >{{ $t("btn.show") }}</v-btn
-                                    >
-                                  </v-col>
-                                </v-row>
-                                <v-row>
-                                  <v-col cols="10">
-                                    <v-file-input
-                                      required
-                                      @blur="
-                                        $v.editedItem.justificatiflogement.$touch()
-                                      "
-                                      v-model="editedItem.justificatiflogement"
-                                      :label="$t('fields.justificatiflogement')"
-                                      filled
-                                      prepend-icon="mdi-camera"
-                                      :error-messages="
-                                        justificatiflogementErrors
-                                      "
-                                    ></v-file-input
-                                  ></v-col>
-                                  <v-col cols="2">
-                                    
-                                    <v-btn
-                                      color="success"
-                                      :disabled="!stepFour"
-                                      @click="show"
-                                      >{{ $t("btn.show") }}</v-btn
-                                    >
-                                  </v-col>
-                                </v-row>
+                              </template>
+                              <v-date-picker
+                                v-model="editedItem.birthdate"
+                                :active-picker.sync="activePicker"
+                                :max="
+                                  new Date(
+                                    Date.now() -
+                                      new Date().getTimezoneOffset() * 60000
+                                  )
+                                    .toISOString()
+                                    .substr(0, 10)
+                                "
+                                min="1950-01-01"
+                              ></v-date-picker>
+                            </v-menu>
+                          </div>
+                          <v-select
+                            v-model="editedItem.nationality"
+                            item-text="nationalite"
+                            :items="nationalities"
+                            filled
+                            :label="$t('fields.nationality')"
+                            readonly
+                          >
+                          </v-select>
+                          <vue-phone-number-input
+                            class="mb-5"
+                            default-country-code="CM"
+                            readonly
+                            v-model="editedItem.phonenumber"
+                          />
+                          <v-spacer></v-spacer>
+                          <v-select
+                            v-model="editedItem.homecountry"
+                            readonly
+                            filled
+                            :items="countries"
+                            :label="$t('fields.homecountry')"
+                            item-text="nom"
+                            item-value="nom"
+                          >
+                          </v-select>
+                          <v-spacer></v-spacer>
+                          <v-select
+                            v-model="editedItem.visatype"
+                            item-text="designation"
+                            item-value="id"
+                            filled
+                            readonly
+                            :items="typesvisa"
+                            :label="$t('fields.visatype')"
+                          ></v-select>
+                          <v-textarea
+                            v-model="editedItem.motif"
+                            filled
+                            readonly
+                            :label="$t('fields.motif')"
+                            auto-grow
+                          ></v-textarea>
+                          <v-textarea
+                            v-model="editedItem.ordremission"
+                            filled
+                            readonly
+                            :label="$t('fields.ordremission')"
+                            auto-grow
+                          >
+                          </v-textarea>
 
-                    
-                         
+                          <v-text-field
+                            v-model="editedItem.passportnumber"
+                            readonly
+                            type="text"
+                            :label="$t('fields.passportnumber')"
+                          >
+                          </v-text-field>
+                          <v-menu
+                            ref="expi"
+                            :close-on-content-click="false"
+                            transition="scale-transition"
+                            offset-y
+                            min-width="auto"
+                          >
+                            <template v-slot:activator="{ on, attrs }">
+                              <v-text-field
+                                readonly
+                                v-model="editedItem.expiredate"
+                                :label="$t('fields.expiredate')"
+                                prepend-icon="mdi-calendar"
+                                v-bind="attrs"
+                                v-on="on"
+                              ></v-text-field>
+                            </template>
+                            <v-date-picker
+                              v-model="editedItem.expiredate"
+                              :active-picker.sync="activeExpirePicker"
+                              :min="
+                                new Date(
+                                  Date.now() -
+                                    new Date().getTimezoneOffset() * 60000
+                                )
+                                  .toISOString()
+                                  .substr(0, 10)
+                              "
+                            ></v-date-picker>
+                          </v-menu>
+                          <v-row>
+                            <v-col cols="10">
+                              <v-file-input
+                                disabled
+                                v-model="editedItem.copypassport"
+                                :label="$t('fields.copypassport')"
+                                filled
+                                prepend-icon="mdi-camera"
+                              ></v-file-input>
+                            </v-col>
+                            <v-col cols="2">
+                              <viewer
+                                style="display: none"
+                                :images="passport_images"
+                              >
+                                <img
+                                  v-for="src in passport_images"
+                                  :key="src"
+                                  :src="src"
+                                />
+                              </viewer>
+
+                              <v-btn color="success" @click="show_passport">{{
+                                $t("btn.show")
+                              }}</v-btn>
+                            </v-col>
+                          </v-row>
+                          <v-row>
+                            <v-col cols="10">
+                              <v-file-input
+                                disabled
+                                v-model="editedItem.justificatiflogement"
+                                :label="$t('fields.justificatiflogement')"
+                                filled
+                                prepend-icon="mdi-camera"
+                              ></v-file-input
+                            ></v-col>
+                            <v-col cols="2">
+                              <viewer
+                                style="display: none"
+                                :images="logement_images"
+                              >
+                                <img
+                                  v-for="src in logement_images"
+                                  :key="src"
+                                  :src="src"
+                                />
+                              </viewer>
+                              <v-btn color="success" @click="show_logement">{{
+                                $t("btn.show")
+                              }}</v-btn>
+                            </v-col>
+                            <v-col v-if="show_comment" cols="12">
+                              <v-textarea
+                                v-model="editedItem.comment"
+                                filled
+                                required
+                                @blur="$v.editedItem.comment.$touch()"
+                                :label="$t('fields.comment')"
+                                auto-grow
+                                :error-messages="commentErrors"
+                              ></v-textarea>
+                            </v-col>
+                          </v-row>
                         </div>
                       </v-flex>
                     </v-container>
@@ -277,46 +257,24 @@
                   <v-card-actions>
                     <v-spacer></v-spacer>
                     <v-btn color="blue darken-1" text @click="close">
-                      Cancel
+                      {{ $t("btn.cancel") }}
                     </v-btn>
-                    <v-btn color="blue darken-1" text @click="save">
-                      Valider
-                    </v-btn>
-                    <v-btn color="red darken-1" text @click="save">
-                      Rejeter
-                    </v-btn>
-                  </v-card-actions>
-                </v-card>
-              </v-dialog>
-              <v-dialog v-model="dialogDelete" max-width="500px">
-                <v-card>
-                  <v-card-title class="text-h5">{{
-                    $t("validations.confirmation_delete")
-                  }}</v-card-title>
-                  <v-card-actions>
-                    <v-spacer></v-spacer>
                     <v-btn
-                                  @click="step = 1"
-                                  color="warning"
-                                  class="mx-5"
-                                  >{{ $t("btn.return") }}</v-btn
-                                >
-                                <v-btn
-                                  color="primary"
-                                  class="mx-5"
-                                  :disabled="!stepThree"
-                                  @click="step = 3"
-                                >
-                                  {{ $t("btn.next") }}
-                                </v-btn>
-                           
-                    <v-btn color="blue darken-1" text @click="closeDelete"
-                      >Cancel</v-btn
+                      color="blue darken-1"
+                      :disabled="show_comment && commentErrors != '' || !length && show_comment"
+                      text
+                      @click="save"
                     >
-                    <v-btn color="blue darken-1" text @click="deleteItemConfirm"
-                      >OK</v-btn
+                      {{ $t("btn.valide") }}
+                    </v-btn>
+                    <v-btn
+                      color="red darken-1"
+                      :disabled="show_comment"
+                      text
+                      @click="show_comment = true"
                     >
-                    <v-spacer></v-spacer>
+                      {{ $t("btn.reject") }}
+                    </v-btn>
                   </v-card-actions>
                 </v-card>
               </v-dialog>
@@ -327,7 +285,7 @@
               {{ item.statut_demande }}
             </v-chip>
           </template>
-          <template v-slot:item.actions="{ item }">
+          <template v-slot:[`item.actions`]="{ item }">
             <v-icon small class="mr-2" @click="editItem(item)">
               mdi-pencil
             </v-icon>
@@ -342,26 +300,12 @@
   </MainLayout-component>
 </template>
 <script>
-
 import moment from "moment";
-import 'viewerjs/dist/viewer.css'
+import "viewerjs/dist/viewer.css";
 import VuePhoneNumberInput from "vue-phone-number-input";
 import "vue-phone-number-input/dist/vue-phone-number-input.css";
-import { mapGetters } from "vuex";
 import { validationMixin } from "vuelidate";
-import {
-  required,
-  minLength,
-  maxLength,
-  helpers,
-} from "vuelidate/lib/validators";
-const alphaNumAndDotValidator = helpers.regex("alphaNumAndDot", /^[a-z\d.]*$/i);
-const regEx = new RegExp(/^.*\.(jpg|JPG|jpeg|JPEG|png|PNG|svg|SVG|pdf|PDF)$/i);
-const nameRegex = helpers.regex(
-  "alphaNum",
-  /^(?![0-9]+$)[A-Za-z0-9_ -]{1,30}$/i
-);
-
+import { required } from "vuelidate/lib/validators";
 import i18n from "../../i18n";
 import MainLayout from "../MainLayout";
 export default {
@@ -373,35 +317,19 @@ export default {
   mixins: [validationMixin],
   validations: {
     editedItem: {
-      firstname: { required, nameRegex },
-      lastname: { required, nameRegex },
-      gender: { required },
-      birthdate: { required },
-      visatype: { required },
-      homecountry: { required },
-      motif: { required },
-      ordremission: { required },
-      nationality: { required },
-      expiredate: { required },
-      phonenumber: { required },
-      copypassport: { required },
-      justificatiflogement: { required },
-      passportnumber: {
-        required,
-        alphaNumAndDotValidator,
-        minLength: minLength(5),
-        maxLength: maxLength(30),
-      },
+      comment: { required },
     },
   },
   data: () => ({
-    images:[],
-    search:null,
+    length: false,
+    show_comment: false,
+    passport_images: [],
+    logement_images: [],
+    search: null,
     sortBy: "created_at",
     sortDesc: true,
     copypassportfilename: null,
     justificatiflogementfilename: null,
-    images:null,
     countries: null,
     typesvisa: null,
     menu: false,
@@ -419,7 +347,7 @@ export default {
     birthdate: null,
     expiredate: null,
     homecountry: null,
-    step: 1,
+
     genders: [
       {
         name: "F",
@@ -436,6 +364,7 @@ export default {
     demands: [],
     editedIndex: -1,
     editedItem: {
+      comment: null,
       firstname: null,
       lastname: null,
       gender: null,
@@ -448,14 +377,13 @@ export default {
       expiredate: null,
       phonenumber: null,
       copypassport: null,
-      justificatiflogement:null,
+      justificatiflogement: null,
       passportnumber: null,
     },
     defaultItem: {},
   }),
 
   computed: {
-    
     getHeaders() {
       this.headers = [
         {
@@ -494,196 +422,55 @@ export default {
       ];
       return this.headers;
     },
-    stepTwo() {
-      if (
-        this.$v.editedItem.firstname.$invalid ||
-        this.$v.editedItem.lastname.$invalid ||
-        this.$v.editedItem.gender.$invalid ||
-        this.$v.editedItem.birthdate.$invalid ||
-        this.$v.editedItem.nationality.$invalid ||
-        this.$v.editedItem.phonenumber.$invalid
-      ) {
-        return true;
-      } else {
-        return false;
-      }
-    },
-    stepThree() {
-      if (
-        this.$v.editedItem.motif.$invalid ||
-        this.$v.editedItem.ordremission.$invalid ||
-        this.$v.editedItem.visatype.$invalid ||
-        this.$v.editedItem.homecountry.$invalid
-      ) {
-        return true;
-      } else {
-        return false;
-      }
-    },
-    stepFour() {
-      if (
-        this.$v.editedItem.expiredate.$invalid ||
-        this.$v.editedItem.passportnumber.$invalid ||
-        this.$v.editedItem.copypassport.$invalid ||
-        this.$v.editedItem.justificatiflogement.$invalid
-      ) {
-        return true;
-      } else {
-        return false;
-      }
-    },
-    phonenumberErrors() {
+    commentErrors() {
       const errors = [];
-      if (!this.$v.editedItem.phonenumber.$dirty) return errors;
-      !this.$v.editedItem.phonenumber.required &&
-        errors.push(i18n.t("required_phonenumber"));
-      return errors;
-    },
-    firstnameErrors() {
-      const errors = [];
-      if (!this.$v.editedItem.firstname.$dirty) return errors;
-      !this.$v.editedItem.firstname.required &&
-        errors.push(i18n.t("required_firstname"));
-      !this.$v.editedItem.firstname.nameRegex &&
-        errors.push(i18n.t("caracter_firstname"));
-      return errors;
-    },
-    lastnameErrors() {
-      const errors = [];
-      if (!this.$v.editedItem.lastname.$dirty) return errors;
-      !this.$v.editedItem.lastname.required &&
-        errors.push(i18n.t("required_lastname"));
-      !this.$v.editedItem.lastname.nameRegex &&
-        errors.push(i18n.t("caracter_lastname"));
-      return errors;
-    },
-    genderErrors() {
-      const errors = [];
-      if (!this.$v.editedItem.gender.$dirty) return errors;
-      !this.$v.editedItem.gender.required &&
-        errors.push(i18n.t("required_gender"));
-      return errors;
-    },
-    birthdateErrors() {
-      const errors = [];
-      if (!this.$v.editedItem.birthdate.$dirty) return errors;
-      !this.$v.editedItem.birthdate.required &&
-        errors.push(i18n.t("required_birthdate"));
-      return errors;
-    },
-    homecountryErrors() {
-      const errors = [];
-      if (!this.$v.editedItem.homecountry.$dirty) return errors;
-      !this.$v.editedItem.homecountry.required &&
-        errors.push(i18n.t("required_homecountry"));
-      return errors;
-    },
-    visaTypeErrors() {
-      const errors = [];
-      if (!this.$v.editedItem.nationality.$dirty) return errors;
-      !this.$v.editedItem.nationality.required &&
-        errors.push(i18n.t("required_visatype"));
-      return errors;
-    },
-    motifErrors() {
-      const errors = [];
-      if (!this.$v.editedItem.motif.$dirty) return errors;
-      !this.$v.editedItem.motif.required &&
-        errors.push(i18n.t("required_motif"));
-      return errors;
-    },
-    ordremissionErrors() {
-      const errors = [];
-      if (!this.$v.editedItem.ordremission.$dirty) return errors;
-      !this.$v.editedItem.ordremission.required &&
-        errors.push(i18n.t("required_ordremission"));
-      return errors;
-    },
-    nationalityErrors() {
-      const errors = [];
-      if (!this.$v.editedItem.nationality.$dirty) return errors;
-      !this.$v.editedItem.nationality.required &&
-        errors.push(i18n.t("required_nationality"));
-      return errors;
-    },
-    expiredateErrors() {
-      const errors = [];
-      if (!this.$v.editedItem.expiredate.$dirty) return errors;
-      !this.$v.editedItem.expiredate.required &&
-        errors.push(i18n.t("required_expiredate"));
-      return errors;
-    },
-    passportnumberErrors() {
-      const errors = [];
-      if (!this.$v.editedItem.passportnumber.$dirty) return errors;
-      !this.$v.editedItem.passportnumber.required &&
-        errors.push(i18n.t("required_passportnumber"));
-      !this.$v.editedItem.passportnumber.alphaNumAndDotValidator &&
-        errors.push(i18n.t("caracter_passportnumber"));
-      !this.$v.editedItem.passportnumber.minLength &&
-        errors.push(i18n.t("min_passportnumber"));
-      !this.$v.editedItem.passportnumber.maxLength &&
-        errors.push(i18n.t("max_passportnumber"));
-      return errors;
-    },
-    copypassportErrors() {
-      const errors = [];
-      if (!this.$v.editedItem.copypassport.$dirty) return errors;
-      !this.$v.editedItem.copypassport.required &&
-        errors.push(i18n.t("required_copypassport"));
-      !regEx.test(this.copypassportfilename) &&
-        errors.push(i18n.t("file_required"));
-      return errors;
-    },
-    justificatiflogementErrors() {
-      const errors = [];
-      if (!this.$v.editedItem.justificatiflogement.$dirty) return errors;
-      !this.$v.editedItem.justificatiflogement.required &&
-        errors.push(i18n.t("required_justificatiflogement"));
-      !regEx.test(this.justificatiflogementfilename) &&
-        errors.push(i18n.t("file_required"));
+      if (!this.$v.editedItem.comment.$dirty) return errors;
+      !this.$v.editedItem.comment.required &&
+        errors.push(i18n.t("validations.required_comment"));
       return errors;
     },
   },
-
   watch: {
     dialog(val) {
       val || this.close();
     },
-    dialogDelete(val) {
-      val || this.closeDelete();
-    },
-    menu(val) {
-      val && setTimeout(() => (this.activePicker = "YEAR"));
-    },
-    expi(val) {
-      val && setTimeout(() => (this.activeExpirePicker = "YEAR"));
-    },
-    'editedItem.copypassport'(val) {
+
+    "editedItem.copypassport"(val) {
       if (val) {
-         let url = URL.createObjectURL(val)
-         let result = val['name'].includes("https");
-         if(result){
-            this.images= [val['name'],]
-            this.copypassportfilename = val['name'];
-         }else{
-            this.images= [url,]   
-            this.copypassportfilename = val.name;
-         }
-      
+        let result = val["name"].includes("https");
+        if (result) {
+          this.passport_images = [val["name"]];
+          this.copypassportfilename = val["name"];
+        } else {
+          let url = URL.createObjectURL(val);
+          this.passport_images = [url];
+          this.copypassportfilename = val.name;
+        }
       }
     },
-    'editedItem.justificatiflogement'(val) {
+    "editedItem.justificatiflogement"(val) {
       if (val) {
-        //   let url = URL.createObjectURL(val)
-        //  let result = val['name'].includes("https");
-        //  if(result){
-        //     this.images= [val['name'],]
-        //      this.justificatiflogementfilename = val['name'];
-        //  }else{
-        //     this.images= [url,]   
-        //     this.copypassportfilename = val.name;
-        //  }
+        let result = val["name"].includes("https");
+        if (result) {
+          this.logement_images = [val["name"]];
+          this.justificatiflogementfilename = val["name"];
+        } else {
+          let url = URL.createObjectURL(val);
+          this.logement_images = [url];
+          this.justificatiflogementfilename = val.name;
+        }
+      }
+    },
+    "editedItem.comment"(val) {
+      if (val) {
+        if (val == "") {
+           this.length = false;
+        } else {
+          this.length = true;
+        }
+      }else{
+          this.length = false;
+             
       }
     },
   },
@@ -694,38 +481,36 @@ export default {
 
   methods: {
     initialize() {
-      //  const file = new File(['blob'], "https://picsum.photos/250/200", {
-      //   lastModified: new Date(2020, 1, 1),
-      //   type: "text/jpg"
-      // });
-      // this.images = ['https://picsum.photos/250/200',]
-     // item.copypassport=file 
       this.demands = [
         {
           code_demande: "78EZ7EDD",
-
           lastname: "Stark",
           firstname: "Tony",
-          gender:"f",
+          gender: "f",
           pays_demande: "Ghana",
           type_visas: "Visa de travail",
-
           statut_demande: "Validé",
-          created_at: "12-04-2022",
-            birthdate:  "12-04-1995",
-          visatype: null,
-          homecountry: null,
+          created_at: new Date(Date.now()).toISOString().substr(0, 10),
+          birthdate: new Date(
+            Date.now() - new Date().getTimezoneOffset() * 60000
+          )
+            .toISOString()
+            .substr(0, 10),
+          visatype: "Visa_de_travail",
+          homecountry: "Benin",
           motif: "thgzrthezrthetrhertherth",
           ordremission: "drgezrgrgtrtgrtgeztrg",
           nationality: "ezstrhrthrthrthr",
-          expiredate:"12-04-2022",
+          expiredate: new Date(
+            Date.now() - new Date().getTimezoneOffset() * 60000
+          )
+            .toISOString()
+            .substr(0, 10),
           phonenumber: "222966301160",
-          justificatiflogement:"https://picsum.photos/200/200",
-          copypassport:"https://picsum.photos/250/200",
+          justificatiflogement: "https://picsum.photos/200/200",
+          copypassport: "https://picsum.photos/250/200",
           passportnumber: "7375637637568548",
-      
         },
-     
       ];
     },
     getColor(statut) {
@@ -735,36 +520,22 @@ export default {
     },
     editItem(item) {
       this.editedIndex = this.demands.indexOf(item);
-      const file = new File(['blob'], item.copypassport, {
-        lastModified: new Date(2020, 1, 1),
-        type: "text/jpg"
+      const passport_file = new File(["blob"], item.copypassport, {
+        lastModified: new Date(Date.now()).toISOString().substr(0, 10),
+        type: "text/jpg",
       });
-     item.copypassport=file  
+      item.copypassport = passport_file;
+      const logement_file = new File(["blob"], item.justificatiflogement, {
+        lastModified: new Date(Date.now()).toISOString().substr(0, 10),
+        type: "text/jpg",
+      });
+      item.justificatiflogement = logement_file;
       this.editedItem = Object.assign({}, item);
       this.dialog = true;
     },
-
-    deleteItem(item) {
-      this.editedIndex = this.demands.indexOf(item);
-      this.editedItem = Object.assign({}, item);
-      this.dialogDelete = true;
-    },
-
-    deleteItemConfirm() {
-      this.demands.splice(this.editedIndex, 1);
-      this.closeDelete();
-    },
-
     close() {
+      this.show_comment = false;
       this.dialog = false;
-      this.$nextTick(() => {
-        this.editedItem = Object.assign({}, this.defaultItem);
-        this.editedIndex = -1;
-      });
-    },
-
-    closeDelete() {
-      this.dialogDelete = false;
       this.$nextTick(() => {
         this.editedItem = Object.assign({}, this.defaultItem);
         this.editedIndex = -1;
@@ -779,17 +550,15 @@ export default {
       }
       this.close();
     },
-    save_birthdate(date) {
-      // this.birthdate = date;
-      this.$refs.menu.save(date);
-    },
-    expi_save(newdate) {
-      // this.expiredate = newdate;
-      this.$refs.expi.save(newdate);
-    },
-    show() {
+
+    show_passport() {
       this.$viewerApi({
-        images: this.images,
+        images: this.passport_images,
+      });
+    },
+    show_logement() {
+      this.$viewerApi({
+        images: this.logement_images,
       });
     },
     async submit() {},
@@ -797,7 +566,7 @@ export default {
 };
 </script>
 <style scoped>
-.custimize-dialog{
- z-index: 33000;
+.custimize-dialog {
+  z-index: 33000;
 }
 </style>

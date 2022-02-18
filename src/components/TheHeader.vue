@@ -25,7 +25,7 @@
               depressed
               plain
               link
-              >Logout</v-btn
+              >{{$t('btn.logout')}}</v-btn
             >
             <!-- <a  :href="logout" class="nav-link">Logout</a> -->
           </li>
@@ -129,10 +129,6 @@ import { mapGetters } from 'vuex';
        logout(){
         this.$store.dispatch('logout')
        },
-        changeTheme() {
-      
-          this.$store.dispatch('setdark',!this.isdark);
-        },
         changeLanguage(id){
         this.$store.dispatch('setlanguage',this.languages[id]['name']);
          },
@@ -141,7 +137,7 @@ import { mapGetters } from 'vuex';
         currentRouteName() {
           return this.$route.name;  
         },
-    ...mapGetters(['authenticated','langLocal','isdark'])
+    ...mapGetters(['authenticated'])
 }
 
   }

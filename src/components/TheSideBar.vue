@@ -28,27 +28,36 @@
           </div>
 
           <!-- Sidebar Menu -->
+          
           <nav class="mt-2">
-            <ul
+
+
+              <ul
               class="nav nav-pills nav-sidebar flex-column"
               data-widget="treeview"
               role="menu"
               data-accordion="false"
             >
-              
+              <li class="nav-item">
+                <a href="/" class="nav-link">
+                <i class="fas fa-home"></i>
+                  <p> {{$t('link.home')}}
+                 
+                  </p>
+                </a>            
+              </li>
               <li class="nav-item">
                 <a href="#" class="nav-link">
                   <i class="fa-solid fa-users-gear"></i>
-                  <p>
-                    User and Role Controls
-                    <i class="fas fa-angle-left right"></i>
+                  <p> {{$t('link.user_role')}}
+                  <i class="fas fa-angle-left right"></i>
                   </p>
                 </a>
                 <ul class="nav nav-treeview">
                   <li class="nav-item">
                     <a href="/list-agent" class="nav-link">
                       <i class="far fa-circle nav-icon"></i>
-                      <p>Liste des agents</p>
+                      <p>{{$t('link.list_agent')}} </p>
                     </a>
                   </li>
                 </ul>
@@ -56,47 +65,15 @@
                   <li class="nav-item">
                     <a href="/create-role" class="nav-link">
                       <i class="far fa-circle nav-icon"></i>
-                      <p>Céer un rôle</p>
+                      <p>{{$t('link.create_role')}}</p>
                     </a>
                   </li>
                 </ul>
                  
               </li>
-              <!-- <li class="nav-item">
-                <a href="#" class="nav-link">
-                  <i class="nav-icon fas fa-edit"></i>
-                  <p>
-                    Forms
-                    <i class="fas fa-angle-left right"></i>
-                  </p>
-                </a>
-                <ul class="nav nav-treeview">
-                  <li class="nav-item">
-                    <a href="pages/forms/general.html" class="nav-link">
-                      <i class="far fa-circle nav-icon"></i>
-                      <p>General Elements</p>
-                    </a>
-                  </li>
-                  <li class="nav-item">
-                    <a href="pages/forms/advanced.html" class="nav-link">
-                      <i class="far fa-circle nav-icon"></i>
-                      <p>Advanced Elements</p>
-                    </a>
-                  </li>
-                  <li class="nav-item">
-                    <a href="pages/forms/editors.html" class="nav-link">
-                      <i class="far fa-circle nav-icon"></i>
-                      <p>Editors</p>
-                    </a>
-                  </li>
-                  <li class="nav-item">
-                    <a href="pages/forms/validation.html" class="nav-link">
-                      <i class="far fa-circle nav-icon"></i>
-                      <p>Validation</p>
-                    </a>
-                  </li>
-                </ul>
-              </li> -->
+           
+            
+          
               <li class="nav-item">
                 <a href="#" class="nav-link">
                   <i class="nav-icon fas fa-table"></i>
@@ -109,33 +86,13 @@
                   <li class="nav-item">
                     <a href="/list-demands" class="nav-link">
                       <i class="far fa-circle nav-icon"></i>
-                      <p>Listes des demandes</p>
+                      <p>{{$t('link.list_demands')}}</p>
                     </a>
                   </li>
-                  <!-- <li class="nav-item">
-                    <a href="pages/tables/data.html" class="nav-link">
-                      <i class="far fa-circle nav-icon"></i>
-                      <p>DataTables</p>
-                    </a>
-                  </li>
-                  <li class="nav-item">
-                    <a href="pages/tables/jsgrid.html" class="nav-link">
-                      <i class="far fa-circle nav-icon"></i>
-                      <p>jsGrid</p>
-                    </a>
-                  </li> -->
+                  
                 </ul>
               </li>
-              <!-- <li class="nav-header">EXAMPLES</li>
-              <li class="nav-item">
-                <a href="pages/calendar.html" class="nav-link">
-                  <i class="nav-icon far fa-calendar-alt"></i>
-                  <p>
-                    Calendar
-                    <span class="badge badge-info right">2</span>
-                  </p>
-                </a>
-              </li> -->
+             
             </ul>
           </nav>
           <!-- /.sidebar-menu -->

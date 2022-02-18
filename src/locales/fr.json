@@ -30,7 +30,11 @@
     "next": "Suivant",
     "return": "Retour",
     "valide": "Valider",
-    "show":"Voir"
+    "show":"Voir",
+    "new_agent":"Ajouter un agent",
+    "logout": "Se déconnecter",
+    "cancel":"Annuler",
+    "reject":"Rejecter"
   },
   "validations": {
     "required_password": "Le mot de passe est obligatoire",
@@ -50,7 +54,8 @@
     "required_role_name": "Le nom du rôle est obligatoire",
     "rolereguex": "Le nom du rôle doit aussi contenir des lettres",
     "role_required": "Le role est obligatoire",
-    "confirmation_delete": "Êtes vous sûre de vouloir supprimer cet élément"
+    "confirmation_delete": "Êtes vous sûre de vouloir supprimer cet élément",
+    "required_comment": "Vous devez remplir le motif du rejet"
   },
   "title": {
     "login": "Connectez vous",
@@ -59,7 +64,8 @@
     "demand_edit": "Modifier la demande",
     "personal_info": "Informations personnelles",
     "visa_info": "Informations du Visa ",
-    "piecesjointes": "Pièces jointes"
+    "piecesjointes": "Pièces jointes",
+    "agent_list":"Liste des agents"
   },
   "fields": {
     "role": "Rôle",
@@ -76,7 +82,9 @@
     "phonenumber": "Numéro de téléphone",
     "copypassport": "Copie du passport",
     "justificatiflogement": "Justificatif de logement",
-    "passportnumber": "Numéro de passport"
+    "passportnumber": "Numéro de passport",
+    "search_text":"Rechercher",
+    "comment":"Commentaire"
   },
   "headers": {
     "lastname": "Nom",
@@ -84,6 +92,14 @@
     "fullname": "Nom Complet",
     "country": "Pays",
     "visatype": "Type de visa",
-    "statut": "Statut de la demande"
+    "statut": "Statut de la demande",
+    "role":"Role"
+  },
+  "link":{
+    "home":"Acceuil",
+    "user_role":"Contrôle utilisateur et rôle ",
+    "list_agent":"Liste des Agents ",
+    "create_role":"Créer un rôle",
+    "list_demands":"Liste des demandes"
   }
 }

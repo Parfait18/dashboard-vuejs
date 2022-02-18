@@ -30,7 +30,11 @@
     "next": "Next",
     "return": "Return",
     "valide": "Valide",
-    "show":"Show"
+    "show":"Show",
+    "new_agent":"Add new agent",
+    "logout": "Logout",
+    "cancel":"Cancel",
+    "reject":"Reject"
   },
   "validations": {
     "required_password": "Password is required",
@@ -50,7 +54,8 @@
     "required_role_name": "Role name is required",
     "rolereguex": "Role name must also contain letters",
     "role_required": "The role is required",
-    "confirmation_delete": "Are you sure you want to delete this item?"
+    "confirmation_delete": "Are you sure you want to delete this item?",
+    "required_comment": "Your reject raison is required"
   },
   "title": {
     "login": "Sign In",
@@ -59,7 +64,8 @@
     "demand_edit": "Edit demande",
     "personal_info": "Personals Informations",
     "visa_info": "Visa Informations",
-    "piecesjointes": "Attachments"
+    "piecesjointes": "Attachments",
+    "agent_list":"Agents list"
   },
   "fields": {
     "role": "Rôle",
@@ -76,13 +82,23 @@
     "phonenumber": "Phone numer",
     "copypassport": "Passport copy",
     "justificatiflogement": "Justificatif de logement",
-    "passportnumber": "Your proof of accommodation"
+    "passportnumber": "Your proof of accommodation",
+    "search_text":"Search",
+    "comment":"Comment"
   },
   "headers": {
     "lastname": "Lastname",
     "firstname": "Firstname",
     "country": "Country",
     "visatype": "Type of visa",
-    "statut": "Status"
+    "statut": "Status",
+    "role":"Role"
+  },
+  "link":{
+    "home":"Home",
+    "user_role":"User and Role Controls",
+    "list_agent":"Agents list",
+    "create_role":"Create role",
+    "list_demands":"Demands list"
   }
 }
