@@ -119,7 +119,7 @@
               <v-text-field
                 v-model="search"
                 append-icon="mdi-magnify"
-                :label="$t('search_text')"
+                 :label="$t('fields.search_text')"
                 single-line
                 hide-details
               ></v-text-field>
@@ -601,6 +601,121 @@ export default {
        initialize() {
       this.demands = [
         {
+          code_demande: "78EZ7EDD",
+
+          lastname: "Stark",
+          firstname: "Tony",
+          gender: "f",
+          pays_demande: "Ghana",
+          type_visas: "Visa de travail",
+
+          statut_demande: "Validé",
+          created_at: "12-04-2022",
+          birthdate: "12-04-1995",
+          visatype: "Visa_de_travail",
+          homecountry: "Benin",
+          motif: "thgzrthezrthetrhertherth",
+          ordremission: "drgezrgrgtrtgrtgeztrg",
+          nationality: "ezstrhrthrthrthr",
+          expiredate: "12-04-2022",
+          phonenumber: "222966301160",
+          justificatiflogement: "https://picsum.photos/200/200",
+          copypassport: "https://picsum.photos/250/200",
+          passportnumber: "7375637637568548",
+        },
+         {
+          code_demande: "78EZ7EDD",
+
+          lastname: "Stark",
+          firstname: "Tony",
+          gender: "f",
+          pays_demande: "Ghana",
+          type_visas: "Visa de travail",
+
+          statut_demande: "Pending",
+          created_at: "12-04-2022",
+          birthdate: "12-04-1995",
+          visatype: "Visa_de_travail",
+          homecountry: "Benin",
+          motif: "thgzrthezrthetrhertherth",
+          ordremission: "drgezrgrgtrtgrtgeztrg",
+          nationality: "ezstrhrthrthrthr",
+          expiredate: "12-04-2022",
+          phonenumber: "222966301160",
+          justificatiflogement: "https://picsum.photos/200/200",
+          copypassport: "https://picsum.photos/250/200",
+          passportnumber: "7375637637568548",
+        },
+         {
+          code_demande: "78EZ7EDD",
+
+          lastname: "Stark",
+          firstname: "Tony",
+          gender: "f",
+          pays_demande: "Ghana",
+          type_visas: "Visa de travail",
+
+          statut_demande: "",
+          created_at: "12-04-2022",
+          birthdate: "12-04-1995",
+          visatype: "Visa_de_travail",
+          homecountry: "Benin",
+          motif: "thgzrthezrthetrhertherth",
+          ordremission: "drgezrgrgtrtgrtgeztrg",
+          nationality: "ezstrhrthrthrthr",
+          expiredate: "12-04-2022",
+          phonenumber: "222966301160",
+          justificatiflogement: "https://picsum.photos/200/200",
+          copypassport: "https://picsum.photos/250/200",
+          passportnumber: "7375637637568548",
+        },
+         {
+          code_demande: "78EZ7EDD",
+
+          lastname: "Stark",
+          firstname: "Tony",
+          gender: "f",
+          pays_demande: "Ghana",
+          type_visas: "Visa de travail",
+
+          statut_demande: "",
+          created_at: "12-04-2022",
+          birthdate: "12-04-1995",
+          visatype: "Visa_de_travail",
+          homecountry: "Benin",
+          motif: "thgzrthezrthetrhertherth",
+          ordremission: "drgezrgrgtrtgrtgeztrg",
+          nationality: "ezstrhrthrthrthr",
+          expiredate: "12-04-2022",
+          phonenumber: "222966301160",
+          justificatiflogement: "https://picsum.photos/200/200",
+          copypassport: "https://picsum.photos/250/200",
+          passportnumber: "7375637637568548",
+        },
+         {
+          code_demande: "78EZ7EDD",
+
+          lastname: "Stark",
+          firstname: "Tony",
+          gender: "f",
+          pays_demande: "Ghana",
+          type_visas: "Visa de travail",
+
+          statut_demande: "Rejeté",
+          created_at: "12-04-2022",
+          birthdate: "12-04-1995",
+          visatype: "Visa_de_travail",
+          homecountry: "Benin",
+          motif: "thgzrthezrthetrhertherth",
+          ordremission: "drgezrgrgtrtgrtgeztrg",
+          nationality: "ezstrhrthrthrthr",
+          expiredate: "12-04-2022",
+          phonenumber: "222966301160",
+          justificatiflogement: "https://picsum.photos/200/200",
+          copypassport: "https://picsum.photos/250/200",
+          passportnumber: "7375637637568548",
+        },
+         {
           code_demande: "78EZ7EDD",
 
           lastname: "Stark",

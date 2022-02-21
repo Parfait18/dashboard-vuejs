@@ -29,7 +29,7 @@
                 transition="dialog-bottom-transition"
                 scrollable
                 v-model="dialog"
-                style="z-index: 1500"
+                style="z-index: 1500;"
                 max-width="1000px"
               >
                 <v-card>
@@ -60,8 +60,7 @@
                             readonly
                             :items="genders"
                             :label="$t('fields.gender')"
-                          >
-                          </v-select>
+                          ></v-select>
                           <div>
                             <v-menu
                               ref="menu"
@@ -87,7 +86,7 @@
                                 :max="
                                   new Date(
                                     Date.now() -
-                                      new Date().getTimezoneOffset() * 60000
+                                      new Date().getTimezoneOffset() * 60000,
                                   )
                                     .toISOString()
                                     .substr(0, 10)
@@ -103,8 +102,7 @@
                             filled
                             :label="$t('fields.nationality')"
                             readonly
-                          >
-                          </v-select>
+                          ></v-select>
                           <vue-phone-number-input
                             class="mb-5"
                             default-country-code="CM"
@@ -120,8 +118,7 @@
                             :label="$t('fields.homecountry')"
                             item-text="nom"
                             item-value="nom"
-                          >
-                          </v-select>
+                          ></v-select>
                           <v-spacer></v-spacer>
                           <v-select
                             v-model="editedItem.visatype"
@@ -145,16 +142,14 @@
                             readonly
                             :label="$t('fields.ordremission')"
                             auto-grow
-                          >
-                          </v-textarea>
+                          ></v-textarea>
 
                           <v-text-field
                             v-model="editedItem.passportnumber"
                             readonly
                             type="text"
                             :label="$t('fields.passportnumber')"
-                          >
-                          </v-text-field>
+                          ></v-text-field>
                           <v-menu
                             ref="expi"
                             :close-on-content-click="false"
@@ -178,7 +173,7 @@
                               :min="
                                 new Date(
                                   Date.now() -
-                                    new Date().getTimezoneOffset() * 60000
+                                    new Date().getTimezoneOffset() * 60000,
                                 )
                                   .toISOString()
                                   .substr(0, 10)
@@ -197,7 +192,7 @@
                             </v-col>
                             <v-col cols="2">
                               <viewer
-                                style="display: none"
+                                style="display: none;"
                                 :images="passport_images"
                               >
                                 <img
@@ -207,9 +202,9 @@
                                 />
                               </viewer>
 
-                              <v-btn color="success" @click="show_passport">{{
-                                $t("btn.show")
-                              }}</v-btn>
+                              <v-btn color="success" @click="show_passport">
+                                {{ $t('btn.show') }}
+                              </v-btn>
                             </v-col>
                           </v-row>
                           <v-row>
@@ -220,11 +215,11 @@
                                 :label="$t('fields.justificatiflogement')"
                                 filled
                                 prepend-icon="mdi-camera"
-                              ></v-file-input
-                            ></v-col>
+                              ></v-file-input>
+                            </v-col>
                             <v-col cols="2">
                               <viewer
-                                style="display: none"
+                                style="display: none;"
                                 :images="logement_images"
                               >
                                 <img
@@ -233,9 +228,9 @@
                                   :src="src"
                                 />
                               </viewer>
-                              <v-btn color="success" @click="show_logement">{{
-                                $t("btn.show")
-                              }}</v-btn>
+                              <v-btn color="success" @click="show_logement">
+                                {{ $t('btn.show') }}
+                              </v-btn>
                             </v-col>
                             <v-col v-if="show_comment" cols="12">
                               <v-textarea
@@ -257,23 +252,26 @@
                   <v-card-actions>
                     <v-spacer></v-spacer>
                     <v-btn color="blue darken-1" text @click="close">
-                      {{ $t("btn.cancel") }}
+                      {{ $t('btn.cancel') }}
                     </v-btn>
                     <v-btn
                       color="blue darken-1"
-                      :disabled="show_comment && commentErrors != '' || !length && show_comment"
+                      :disabled="
+                        (show_comment && commentErrors != '') ||
+                        (!length && show_comment)
+                      "
                       text
                       @click="save"
                     >
-                      {{ $t("btn.valide") }}
+                      {{ $t('btn.valide') }}
                     </v-btn>
                     <v-btn
                       color="red darken-1"
                       :disabled="show_comment"
                       text
-                      @click="show_comment = true"
+                      @click="reject"
                     >
-                      {{ $t("btn.reject") }}
+                      {{ $t('btn.reject') }}
                     </v-btn>
                   </v-card-actions>
                 </v-card>
@@ -292,7 +290,7 @@
             <!-- <v-icon small @click="deleteItem(item)"> mdi-delete </v-icon> -->
           </template>
           <template v-slot:no-data>
-            <v-btn color="primary" @click="initialize"> Reset </v-btn>
+            <v-btn color="primary" @click="initialize">Reset</v-btn>
           </template>
         </v-data-table>
       </div>
@@ -300,19 +298,19 @@
   </MainLayout-component>
 </template>
 <script>
-import moment from "moment";
-import "viewerjs/dist/viewer.css";
-import VuePhoneNumberInput from "vue-phone-number-input";
-import "vue-phone-number-input/dist/vue-phone-number-input.css";
-import { validationMixin } from "vuelidate";
-import { required } from "vuelidate/lib/validators";
-import i18n from "../../i18n";
-import MainLayout from "../MainLayout";
+import moment from 'moment'
+import 'viewerjs/dist/viewer.css'
+import VuePhoneNumberInput from 'vue-phone-number-input'
+import 'vue-phone-number-input/dist/vue-phone-number-input.css'
+import { validationMixin } from 'vuelidate'
+import { required } from 'vuelidate/lib/validators'
+import i18n from '../../i18n'
+import MainLayout from '../MainLayout'
 export default {
-  name: "ListDemands",
+  name: 'ListDemands',
   components: {
-    "MainLayout-component": MainLayout,
-    "vue-phone-number-input": VuePhoneNumberInput,
+    'MainLayout-component': MainLayout,
+    'vue-phone-number-input': VuePhoneNumberInput,
   },
   mixins: [validationMixin],
   validations: {
@@ -321,12 +319,13 @@ export default {
     },
   },
   data: () => ({
+    demand_status:"Validé",
     length: false,
     show_comment: false,
     passport_images: [],
     logement_images: [],
     search: null,
-    sortBy: "created_at",
+    sortBy: 'created_at',
     sortDesc: true,
     copypassportfilename: null,
     justificatiflogementfilename: null,
@@ -334,7 +333,7 @@ export default {
     typesvisa: null,
     menu: false,
     expi: false,
-    sortBy: "created_at",
+    sortBy: 'created_at',
     sortDesc: true,
     visa: null,
     isLoading: false,
@@ -347,15 +346,14 @@ export default {
     birthdate: null,
     expiredate: null,
     homecountry: null,
-
     genders: [
       {
-        name: "F",
-        value: "f",
+        name: 'F',
+        value: 'f',
       },
       {
-        name: "M",
-        value: "m",
+        name: 'M',
+        value: 'm',
       },
     ],
     dialog: false,
@@ -387,125 +385,237 @@ export default {
     getHeaders() {
       this.headers = [
         {
-          text: "N°",
-          align: "center",
-          value: "code_demande",
+          text: 'N°',
+          align: 'center',
+          value: 'code_demande',
         },
         {
-          text: i18n.t("headers.firstname"),
-          align: "center",
-          value: "firstname",
+          text: i18n.t('headers.firstname'),
+          align: 'center',
+          value: 'firstname',
         },
         {
-          text: i18n.t("headers.lastname"),
-          align: "center",
-          value: "lastname",
+          text: i18n.t('headers.lastname'),
+          align: 'center',
+          value: 'lastname',
         },
         {
-          text: i18n.t("headers.country"),
-          align: "center",
-          value: "pays_demande",
+          text: i18n.t('headers.country'),
+          align: 'center',
+          value: 'pays_demande',
         },
         {
-          text: i18n.t("headers.visatype"),
-          align: "center",
-          value: "type_visas",
+          text: i18n.t('headers.visatype'),
+          align: 'center',
+          value: 'type_visas',
         },
         {
-          text: i18n.t("headers.statut"),
-          align: "center",
-          value: "statut_demande",
+          text: i18n.t('headers.statut'),
+          align: 'center',
+          value: 'statut_demande',
         },
-        { text: "Date", align: "center", value: "created_at" },
+        { text: 'Date', align: 'center', value: 'created_at' },
         ,
-        { text: "Actions", align: "center", value: "actions" },
-      ];
-      return this.headers;
+        { text: 'Actions', align: 'center', value: 'actions' },
+      ]
+      return this.headers
     },
     commentErrors() {
-      const errors = [];
-      if (!this.$v.editedItem.comment.$dirty) return errors;
+      const errors = []
+      if (!this.$v.editedItem.comment.$dirty) return errors
       !this.$v.editedItem.comment.required &&
-        errors.push(i18n.t("validations.required_comment"));
-      return errors;
+        errors.push(i18n.t('validations.required_comment'))
+      return errors
     },
   },
   watch: {
     dialog(val) {
-      val || this.close();
+      val || this.close()
     },
 
-    "editedItem.copypassport"(val) {
+    'editedItem.copypassport'(val) {
       if (val) {
-        let result = val["name"].includes("https");
+        let result = val['name'].includes('https')
         if (result) {
-          this.passport_images = [val["name"]];
-          this.copypassportfilename = val["name"];
+          this.passport_images = [val['name']]
+          this.copypassportfilename = val['name']
         } else {
-          let url = URL.createObjectURL(val);
-          this.passport_images = [url];
-          this.copypassportfilename = val.name;
+          let url = URL.createObjectURL(val)
+          this.passport_images = [url]
+          this.copypassportfilename = val.name
         }
       }
     },
-    "editedItem.justificatiflogement"(val) {
+    'editedItem.justificatiflogement'(val) {
       if (val) {
-        let result = val["name"].includes("https");
+        let result = val['name'].includes('https')
         if (result) {
-          this.logement_images = [val["name"]];
-          this.justificatiflogementfilename = val["name"];
+          this.logement_images = [val['name']]
+          this.justificatiflogementfilename = val['name']
         } else {
-          let url = URL.createObjectURL(val);
-          this.logement_images = [url];
-          this.justificatiflogementfilename = val.name;
+          let url = URL.createObjectURL(val)
+          this.logement_images = [url]
+          this.justificatiflogementfilename = val.name
         }
       }
     },
-    "editedItem.comment"(val) {
+    'editedItem.comment'(val) {
       if (val) {
-        if (val == "") {
-           this.length = false;
+        if (val == '') {
+          this.length = false
         } else {
-          this.length = true;
+          this.length = true
         }
-      }else{
-          this.length = false;
-             
+      } else {
+        this.length = false
       }
     },
   },
 
   created() {
-    this.initialize();
+    this.initialize()
   },
 
   methods: {
+    reject(){
+    this.show_comment = true;
+    this.demand_status='Rejeté'
+    },
     initialize() {
-      this.demands = [
+          this.demands = [
         {
           code_demande: "78EZ7EDD",
+
           lastname: "Stark",
           firstname: "Tony",
           gender: "f",
           pays_demande: "Ghana",
           type_visas: "Visa de travail",
+
           statut_demande: "Validé",
-          created_at: new Date(Date.now()).toISOString().substr(0, 10),
-          birthdate: new Date(
-            Date.now() - new Date().getTimezoneOffset() * 60000
-          )
-            .toISOString()
-            .substr(0, 10),
+          created_at: "12-04-2022",
+          birthdate: "12-04-1995",
           visatype: "Visa_de_travail",
           homecountry: "Benin",
           motif: "thgzrthezrthetrhertherth",
           ordremission: "drgezrgrgtrtgrtgeztrg",
           nationality: "ezstrhrthrthrthr",
-          expiredate: new Date(
-            Date.now() - new Date().getTimezoneOffset() * 60000
-          )
-            .toISOString()
-            .substr(0, 10),
+          expiredate: "12-04-2022",
+          phonenumber: "222966301160",
+          justificatiflogement: "https://picsum.photos/200/200",
+          copypassport: "https://picsum.photos/250/200",
+          passportnumber: "7375637637568548",
+        },
+         {
+          code_demande: "78EZ7EDD",
+
+          lastname: "Stark",
+          firstname: "Tony",
+          gender: "f",
+          pays_demande: "Ghana",
+          type_visas: "Visa de travail",
+
+          statut_demande: "Pending",
+          created_at: "12-04-2022",
+          birthdate: "12-04-1995",
+          visatype: "Visa_de_travail",
+          homecountry: "Benin",
+          motif: "thgzrthezrthetrhertherth",
+          ordremission: "drgezrgrgtrtgrtgeztrg",
+          nationality: "ezstrhrthrthrthr",
+          expiredate: "12-04-2022",
+          phonenumber: "222966301160",
+          justificatiflogement: "https://picsum.photos/200/200",
+          copypassport: "https://picsum.photos/250/200",
+          passportnumber: "7375637637568548",
+        },
+         {
+          code_demande: "78EZ7EDD",
+
+          lastname: "Stark",
+          firstname: "Tony",
+          gender: "f",
+          pays_demande: "Ghana",
+          type_visas: "Visa de travail",
+
+          statut_demande: "",
+          created_at: "12-04-2022",
+          birthdate: "12-04-1995",
+          visatype: "Visa_de_travail",
+          homecountry: "Benin",
+          motif: "thgzrthezrthetrhertherth",
+          ordremission: "drgezrgrgtrtgrtgeztrg",
+          nationality: "ezstrhrthrthrthr",
+          expiredate: "12-04-2022",
+          phonenumber: "222966301160",
+          justificatiflogement: "https://picsum.photos/200/200",
+          copypassport: "https://picsum.photos/250/200",
+          passportnumber: "7375637637568548",
+        },
+         {
+          code_demande: "78EZ7EDD",
+
+          lastname: "Stark",
+          firstname: "Tony",
+          gender: "f",
+          pays_demande: "Ghana",
+          type_visas: "Visa de travail",
+
+          statut_demande: "",
+          created_at: "12-04-2022",
+          birthdate: "12-04-1995",
+          visatype: "Visa_de_travail",
+          homecountry: "Benin",
+          motif: "thgzrthezrthetrhertherth",
+          ordremission: "drgezrgrgtrtgrtgeztrg",
+          nationality: "ezstrhrthrthrthr",
+          expiredate: "12-04-2022",
+          phonenumber: "222966301160",
+          justificatiflogement: "https://picsum.photos/200/200",
+          copypassport: "https://picsum.photos/250/200",
+          passportnumber: "7375637637568548",
+        },
+         {
+          code_demande: "78EZ7EDD",
+
+          lastname: "Stark",
+          firstname: "Tony",
+          gender: "f",
+          pays_demande: "Ghana",
+          type_visas: "Visa de travail",
+
+          statut_demande: "Rejeté",
+          created_at: "12-04-2022",
+          birthdate: "12-04-1995",
+          visatype: "Visa_de_travail",
+          homecountry: "Benin",
+          motif: "thgzrthezrthetrhertherth",
+          ordremission: "drgezrgrgtrtgrtgeztrg",
+          nationality: "ezstrhrthrthrthr",
+          expiredate: "12-04-2022",
+          phonenumber: "222966301160",
+          justificatiflogement: "https://picsum.photos/200/200",
+          copypassport: "https://picsum.photos/250/200",
+          passportnumber: "7375637637568548",
+        },
+         {
+          code_demande: "78EZ7EDD",
+
+          lastname: "Stark",
+          firstname: "Tony",
+          gender: "f",
+          pays_demande: "Ghana",
+          type_visas: "Visa de travail",
+
+          statut_demande: "Validé",
+          created_at: "12-04-2022",
+          birthdate: "12-04-1995",
+          visatype: "Visa_de_travail",
+          homecountry: "Benin",
+          motif: "thgzrthezrthetrhertherth",
+          ordremission: "drgezrgrgtrtgrtgeztrg",
+          nationality: "ezstrhrthrthrthr",
+          expiredate: "12-04-2022",
           phonenumber: "222966301160",
           justificatiflogement: "https://picsum.photos/200/200",
           copypassport: "https://picsum.photos/250/200",
@@ -514,56 +624,59 @@ export default {
       ];
     },
     getColor(statut) {
-      if (statut == "Validé" || statut == "Valided") return "green";
-      else if (statut == "En cours" || statut == "Pending") return "orange";
-      else return "red";
+      if (statut == 'Validé' || statut == 'Valided') return 'green'
+      else if (statut == 'En cours' || statut == 'Pending') return 'orange'
+      else return 'red'
     },
     editItem(item) {
-      this.editedIndex = this.demands.indexOf(item);
-      const passport_file = new File(["blob"], item.copypassport, {
+      this.editedIndex = this.demands.indexOf(item)
+      const passport_file = new File(['blob'], item.copypassport, {
         lastModified: new Date(Date.now()).toISOString().substr(0, 10),
-        type: "text/jpg",
-      });
-      item.copypassport = passport_file;
-      const logement_file = new File(["blob"], item.justificatiflogement, {
+        type: 'text/jpg',
+      })
+      item.copypassport = passport_file
+      const logement_file = new File(['blob'], item.justificatiflogement, {
         lastModified: new Date(Date.now()).toISOString().substr(0, 10),
-        type: "text/jpg",
-      });
-      item.justificatiflogement = logement_file;
-      this.editedItem = Object.assign({}, item);
-      this.dialog = true;
+        type: 'text/jpg',
+      })
+      item.justificatiflogement = logement_file
+      this.editedItem = Object.assign({}, item)
+      this.dialog = true
     },
     close() {
-      this.show_comment = false;
-      this.dialog = false;
+      this.show_comment = false
+      this.dialog = false
       this.$nextTick(() => {
-        this.editedItem = Object.assign({}, this.defaultItem);
-        this.editedIndex = -1;
-      });
+        this.editedItem = Object.assign({}, this.defaultItem)
+        this.editedIndex = -1
+      })
     },
 
     save() {
       if (this.editedIndex > -1) {
-        Object.assign(this.demands[this.editedIndex], this.editedItem);
+        this.editedItem.statut_demande =this.demand_status;
+        Object.assign(this.demands[this.editedIndex], this.editedItem)
       } else {
-        this.demands.push(this.editedItem);
+        this.demands.push(this.editedItem)
       }
-      this.close();
+      
+      this.demand_status='Validé'
+      this.close()
     },
 
     show_passport() {
       this.$viewerApi({
         images: this.passport_images,
-      });
+      })
     },
     show_logement() {
       this.$viewerApi({
         images: this.logement_images,
-      });
+      })
     },
     async submit() {},
   },
-};
+}
 </script>
 <style scoped>
 .custimize-dialog {
