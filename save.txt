@@ -1,0 +1,594 @@
+<template>
+  <v-container style="max-width: 900px;">
+    <v-row class="text-center">
+      <v-col md="6" offset-md="3" v-if="show">
+        <v-card class="transparent">
+          <v-btn
+          fab
+            absolute
+            top
+            right
+            depressed
+            class="text-white close-btn"
+            @click="close"
+          >
+            <i class="fa-solid fa-xmark"></i>
+          </v-btn>
+          <v-card-text>
+            <div class="mt-5 white--text">
+              <h6 class="mx-auto">Total à payer</h6>
+            </div>
+            <div style="color: #fc354c;">
+              <h4 class="mx-auto">{{ amount }} FCFA</h4>
+            </div>
+            <!-- <div class="white--text text-subtitle-1">
+              2% fcfa de frais de transaction ont été ajouté
+            </div> -->
+          </v-card-text>
+          <!-- <v-divider
+            width="400"
+            :light="true"
+            class="mx-auto divider"
+          ></v-divider> -->
+
+          <v-toolbar color="transparent" dark flat>
+            <h6 class="mx-auto">Sélectionnez un mode de paiement</h6>
+            <template v-slot:extension>
+              <v-tabs v-model="tabs" centered icons-and-text>
+                <v-tab class="white--text">Mobile Money</v-tab>
+                <v-tab class="white--text">Credit Card</v-tab>
+              </v-tabs>
+            </template>
+          </v-toolbar>
+
+          <v-tabs-items class="cardColor" v-model="tabs">
+            <v-tab-item>
+              <v-card color="transparent" flat>
+                <v-card-text>
+                  <v-form>
+                    <v-container>
+                      <v-row>
+                        <v-col cols="12" sm="6">
+                          <v-text-field
+                            clearable
+                            color="white"
+                            v-model="firstname"
+                            label="Prénom"
+                            filled
+                            @blur="$v.firstname.$touch()"
+                            :error-messages="firstnameErrors"
+                          ></v-text-field>
+                        </v-col>
+
+                        <v-col cols="12" sm="6">
+                          <v-text-field
+                            clearable
+                            color="white"
+                            v-model="lastname"
+                            label="Nom"
+                            filled
+                            @blur="$v.lastname.$touch()"
+                            :error-messages="lastnameErrors"
+                          ></v-text-field>
+                        </v-col>
+                        <v-col cols="12" sm="12">
+                          <v-text-field
+                            color="white"
+                            v-model="email"
+                            filled
+                            label="Email"
+                            prepend-icon="mdi-email"
+                            clearable
+                            @blur="$v.email.$touch()"
+                            :error-messages="emailErrors"
+                          ></v-text-field>
+                        </v-col>
+                        <v-col cols="12" sm="12">
+                          <v-text-field
+                            clearable
+                            color="white"
+                            filled
+                            v-model="phonenumber"
+                            label="Numéro de téléphone"
+                            :prepend-icon="phone_icon"
+                            @keypress="filter($event)"
+                            maxlength="11"
+                            v-mask="'## ## ## ##'"
+                            @blur="$v.phonenumber.$touch()"
+                            :error-messages="phonenumberErrors"
+                          >
+                            <template v-if="img_src" v-slot:prepend>
+                              <img
+                                width="35"
+                                height="35"
+                                v-bind:src="img_src"
+                                style="border-radius: 10%;"
+                              />
+                            </template>
+                          </v-text-field>
+                        </v-col>
+                        <v-col cols="12" sm="12">
+                          <v-btn
+                            block
+                            depressed
+                            class="text-white pay-btn"
+                            @click="submit"
+                            :loading="isLoading"
+                          >
+                            Payer
+                          </v-btn>
+                        </v-col>
+                      </v-row>
+                    </v-container>
+                  </v-form>
+                </v-card-text>
+              </v-card>
+            </v-tab-item>
+            <v-tab-item>
+              <v-card color="transparent" flat>
+                <v-card-text>
+                  <v-form>
+                    <v-container>
+                      <v-row>
+                        <v-col cols="12" sm="6">
+                          <v-text-field
+                            clearable
+                            color="white"
+                            v-model="firstname"
+                            label="Prénom"
+                            filled
+                            @blur="$v.firstname.$touch()"
+                            :error-messages="firstnameErrors"
+                          ></v-text-field>
+                        </v-col>
+
+                        <v-col cols="12" sm="6">
+                          <v-text-field
+                            clearable
+                            color="white"
+                            v-model="lastname"
+                            label="Nom"
+                            filled
+                            @blur="$v.lastname.$touch()"
+                            :error-messages="lastnameErrors"
+                          ></v-text-field>
+                        </v-col>
+
+                        <v-col cols="12" sm="12">
+                          <v-text-field
+                            color="white"
+                            v-model="email"
+                            filled
+                            label="Email"
+                            prepend-icon="mdi-email"
+                            clearable
+                            @blur="$v.email.$touch()"
+                            :error-messages="emailErrors"
+                          ></v-text-field>
+                        </v-col>
+
+                        <v-col cols="12" sm="12">
+                          <v-text-field
+                            clearable
+                            color="white"
+                            filled
+                            v-model="cardnumber"
+                            label="Numéro de la carte"
+                            :prepend-icon="icon"
+                            @keypress="filter($event)"
+                            maxlength="19"
+                            v-mask="'#### #### #### ####'"
+                            @blur="$v.cardnumber.$touch()"
+                            :error-messages="cardnumberErrors"
+                          ></v-text-field>
+                        </v-col>
+
+                        <v-col cols="6" sm="6">
+                          <v-menu
+                            ref="expi"
+                            v-model="expi"
+                            :close-on-content-click="false"
+                            transition="scale-transition"
+                            offset-y
+                            min-width="auto"
+                          >
+                            <template v-slot:activator="{ on, attrs }">
+                              <v-text-field
+                                clearable
+                                color="white"
+                                required
+                                v-model="expiredate"
+                                label="Expiration"
+                                prepend-icon="mdi-calendar"
+                                filled
+                                readonly
+                                v-bind="attrs"
+                                v-on="on"
+                                @blur="$v.expiredate.$touch()"
+                                :error-messages="expiredateErrors"
+                              ></v-text-field>
+                            </template>
+                            <v-date-picker
+                              type="month"
+                              locale="fr"
+                              v-model="expiredate"
+                              :active-picker.sync="activeExpirePicker"
+                              :min="
+                                new Date(
+                                  Date.now() -
+                                    new Date().getTimezoneOffset() * 60000,
+                                )
+                                  .toISOString()
+                                  .substr(0, 10)
+                              "
+                              @change="expi_save"
+                            ></v-date-picker>
+                          </v-menu>
+                        </v-col>
+                        <v-col cols="6" sm="6">
+                          <v-text-field
+                            clearable
+                            color="white"
+                            filled
+                            v-model="cvcnumber"
+                            label="CVC"
+                            @keypress="filter($event)"
+                            maxlength="5"
+                            v-mask="'# # #'"
+                            @blur="$v.cvcnumber.$touch()"
+                            :error-messages="cvcnumberErrors"
+                          ></v-text-field>
+                        </v-col>
+                        <v-col cols="12" sm="12">
+                          <v-btn
+                            block
+                            depressed
+                            class="text-white pay-btn"
+                            @click="submitCard"
+                            :loading="isLoading"
+                          >
+                            Payer
+                          </v-btn>
+                        </v-col>
+                      </v-row>
+                    </v-container>
+                  </v-form>
+                </v-card-text>
+              </v-card>
+            </v-tab-item>
+          </v-tabs-items>
+          <v-card-actions class="" style="font-size: 12px; display: block;">
+            <div
+              class="white--text mx-auto"
+              style="margin: 15px; display: block;"
+            >
+              En payant par EPAY, vous acceptz nos
+              <a style="color: #0abfbc;" href="">conditions générales</a>
+              d'utilisation
+            </div>
+            <v-spacer></v-spacer>
+            <div
+              class="white--text mx-auto"
+              style="margin: 15px; display: block;"
+            >
+              <i class="fa-solid fa-square-check"></i>
+              Payment sécurisé fourni par EPAY
+            </div>
+          </v-card-actions>
+        </v-card>
+      </v-col>
+    </v-row>
+  </v-container>
+</template>
+
+<script>
+import moment from 'moment'
+import mtn_logo from '../assets/mtn.svg'
+import moov_logo from '../assets/moov.svg'
+import { validationMixin } from 'vuelidate'
+import {
+  required,
+  minLength,
+  maxLength,
+  email,
+  helpers,
+} from 'vuelidate/lib/validators'
+const nameRegex = helpers.regex('alphaNum', /^(?![0-9]+$)[A-Za-z0-9_ -]{1,30}$/)
+
+export default {
+  name: 'Payment',
+  mixins: [validationMixin],
+  validations: {
+    firstname: { required, nameRegex },
+    lastname: { required, nameRegex },
+    email: { required, email },
+    phonenumber: {
+      required,
+      minLength: minLength(8),
+      maxLength: maxLength(11),
+    },
+    expiredate: { required },
+    cardnumber: {
+      required,
+      minLength: minLength(16),
+      maxLength: maxLength(19),
+    },
+    cvcnumber: {
+      required,
+      minLength: minLength(3),
+      maxLength: maxLength(5),
+    },
+  },
+  data() {
+    return {
+      show: true,
+      amount: 2500000,
+      isLoading: false,
+      cvcnumber: null,
+      menu2: false,
+      img_src: null,
+      expi: false,
+      phone_icon: 'fa-solid fa-phone',
+      activeExpirePicker: null,
+      expiredate: null,
+      icon: 'fa-solid fa-credit-card',
+      cardnumber: null,
+      email: null,
+      firstname: null,
+      lastname: null,
+      phonenumber: null,
+      message2: 'Hey!',
+      message3: 'Hey!',
+      message4: 'Hey!',
+      tabs: null,
+    }
+  },
+
+  computed: {
+    firstnameErrors() {
+      const errors = []
+      if (!this.$v.firstname.$dirty) return errors
+      !this.$v.firstname.required && errors.push('Votre prénom est obligatoire')
+      !this.$v.firstname.nameRegex &&
+        errors.push('Votre prénom doit aussi contenir des caratères')
+      return errors
+    },
+    lastnameErrors() {
+      const errors = []
+      if (!this.$v.lastname.$dirty) return errors
+      !this.$v.lastname.required && errors.push('Votre nom est obligatoire')
+      !this.$v.lastname.nameRegex &&
+        errors.push('Votre prénom doit aussi contenir des caratères')
+      return errors
+    },
+    emailErrors() {
+      const errors = []
+      if (!this.$v.email.$dirty) return errors
+      !this.$v.email.email && errors.push('Votre email doit être valide')
+      !this.$v.email.required &&
+        errors.push('Votre email de téléphone est obligatoire')
+      return errors
+    },
+    expiredateErrors() {
+      const errors = []
+      if (!this.$v.expiredate.$dirty) return errors
+      !this.$v.expiredate.required &&
+        errors.push("La date d'expiration de la carte est obligatoire")
+      return errors
+    },
+    cvcnumberErrors() {
+      const errors = []
+      if (!this.$v.cvcnumber.$dirty) return errors
+      !this.$v.cvcnumber.required && errors.push('Le code CVC est obligatoire')
+      !this.$v.cvcnumber.minLength &&
+        errors.push('Le code CVC doit contenir au plus 3 chiffres')
+      !this.$v.cvcnumber.maxLength &&
+        errors.push('Le code CVC doit contenir au plus 3 chiffres')
+      return errors
+    },
+    phonenumberErrors() {
+      const errors = []
+      if (!this.$v.phonenumber.$dirty) return errors
+      !this.$v.phonenumber.required &&
+        errors.push('Le numéro de téléphone est obligatoire')
+      !this.$v.phonenumber.minLength &&
+        errors.push('Le numéro de téléphone doit contenir au plus 8 chiffres')
+      !this.$v.phonenumber.maxLength &&
+        errors.push('Le numéro de téléphone doit contenir au plus 8 chiffres')
+      return errors
+    },
+    cardnumberErrors() {
+      const errors = []
+      if (!this.$v.cardnumber.$dirty) return errors
+      !this.$v.cardnumber.required &&
+        errors.push('Le numéro de la carte est obligatoire')
+      !this.$v.cardnumber.minLength &&
+        errors.push('Le numéro de la carte doit contenir au plus 16 chiffres')
+      !this.$v.cardnumber.maxLength &&
+        errors.push('Le numéro de la carte doit contenir au plus 16 chiffres')
+      return errors
+    },
+  },
+  watch: {
+    cardnumber(val) {
+      if (val) {
+        if (val.toString().indexOf('4242') == 0) {
+          this.icon = 'fa-brands fa-cc-visa'
+        } else if (val.toString().indexOf('5555') == 0) {
+          this.icon = 'fa-brands fa-cc-mastercard'
+        } else if (val.toString().indexOf('3782') == 0) {
+          this.icon = 'fa-brands fa-cc-amex'
+        } else if (val.toString().indexOf('6011') == 0) {
+          this.icon = 'fa-brands fa-cc-discover'
+        } else if (val.toString().indexOf('3056') == 0) {
+          this.icon = 'fa-brands fa-cc-diners-club'
+        } else if (val.toString().indexOf('3566') == 0) {
+          this.icon = 'fa-brands fa-cc-jcb'
+        }
+      } else {
+        this.icon = 'fa-solid fa-credit-card'
+      }
+      this.cardnumber = val
+    },
+    phonenumber(val) {
+      if (val) {
+        if (this.getIfMTNnumber(val.toString().substring(0, 2))) {
+          this.img_src = mtn_logo
+          this.phone_icon = null
+        } else if (this.getIfMOOVNumber(val.toString().substring(0, 2))) {
+          this.img_src = moov_logo
+          this.phone_icon = null
+        }
+      } else {
+        this.phone_icon = 'fa-solid fa-phone'
+        this.img_src = null
+      }
+      this.phonenumber = val
+    },
+    expi(val) {
+      val && setTimeout(() => (this.activeExpirePicker = 'YEAR'))
+    },
+
+    // expiredate(value){
+
+    //   if (value) {
+    //     this.expiredate= moment(String(value)).format("MM-YYYY");
+    //   }
+    // console.log(  this.expiredate)
+    // }
+  },
+
+  methods: {
+    close() {
+      this.show = false
+    },
+    filter: function (evt) {
+      evt = evt ? evt : window.event
+      let expect = evt.target.value.toString() + evt.key.toString()
+      if (!/^[-+]?[0-9]*\.?[0-9]*$/.test(expect.split(' ').join(''))) {
+        evt.preventDefault()
+      } else {
+        return true
+      }
+    },
+    expi_save(newdate) {
+      // this.expiredate = newdate;
+      this.$refs.expi.save(newdate)
+    },
+
+    getIfMTNnumber(prefix) {
+      let list_prefix = [
+        '51',
+        '52',
+        '53',
+        '54',
+        '61',
+        '62',
+        '66',
+        '67',
+        '69',
+        '90',
+        '91',
+        '96',
+        '97',
+      ]
+      if (list_prefix.includes(prefix)) return true
+      else return false
+    },
+    getIfMOOVNumber(prefix) {
+      let list_prefix = ['99', '98', '94', '95', '65', '64']
+      if (list_prefix.includes(prefix)) return true
+      else return false
+    },
+    submit(){
+      //this.isLoading = true
+      // this.$v.$touch()
+      if (
+        !this.$v.firstname.$invalid &&
+        !this.$v.lastname.$invalid &&
+        !this.$v.email.$invalid &&
+        !this.$v.phonenumber.$invalid
+      ) {
+        const data = new FormData()
+        data.append('prenom', this.firstname)
+        data.append('nom', this.lastname)
+        data.append('email', this.email)
+        data.append(
+          'phonenumber',
+          this.phonenumber.toString().replace(/\s+/g, '')
+        )
+        for (let [key, value] of data.entries()) {
+          console.log(`${key}: ${value}`)
+        }
+        // await this.$store.dispatch("register", data)
+        // .then((response) => {
+        //   this.isLoading = false
+        //   })
+        //   .catch((error) => {
+        //     this.loading=false;
+        //     console.error(error);
+        //   });
+      }
+    },
+    submitCard() {
+      //this.isLoading = true
+      // this.$v.$touch()
+      if (!this.$v.firstname.$invalid &&  !this.$v.lastname.$invalid && !this.$v.email.$invalid &&  !this.$v.cardnumber.$invalid && !this.$v.cvcnumber.$invalid && !this.$v.expiredate.$invalid) {
+          const dataform = new FormData()
+          dataform.append('prenom', this.firstname)
+          dataform.append('nom', this.lastname)
+          dataform.append('email', this.email)
+          dataform.append('cardnumber',this.cardnumber.toString().replace(/\s+/g,''))
+          dataform.append('cvcnumber',this.cvcnumber.toString().replace(/\s+/g,''))
+          dataform.append('expiration_date',this.expiredate) 
+          
+          
+          for (let [key, value] of dataform.entries()) {
+          console.log(`${key}: ${value}`)
+        }
+      }
+
+       
+        // await this.$store.dispatch("register", data)
+        // .then((response) => {
+        //   this.isLoading = false
+        //   })
+        //   .catch((error) => {
+        //     this.loading=false;
+        //     console.error(error);
+        //   });
+    }
+    
+  }
+}
+</script>
+
+<style>
+.divider {
+  border-color: white !important;
+}
+.cardColor {
+  background: rgba(255, 255, 255, 0.3) !important;
+  border-color: white !important;
+}
+.pay-btn {
+  background: linear-gradient(45deg, #0abfbc, #fc354c);
+  height: 40px;
+}
+.close-btn {
+  background: rgba(255, 255, 255, 0.3) !important;
+  margin-top: 6px;
+  margin-right: -38px;
+  border-radius: 100%;
+}
+.pay-btn:hover {
+  background: linear-gradient(90deg, #fc354c, #0abfbc);
+}
+.v-toolbar__content {
+  max-height: 25px !important;
+}
+.v-toolbar--extended {
+  max-height: 72px !important;
+}
+</style>
+

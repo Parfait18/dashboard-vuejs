@@ -123,7 +123,7 @@ import { mapGetters } from 'vuex';
           ],
     }),
     mounted(){
-   
+      // console.log(this.authenticated);
     },
     methods :{
        logout(){

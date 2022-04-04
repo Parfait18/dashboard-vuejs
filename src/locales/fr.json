@@ -11,9 +11,12 @@
   },
   "auth": {
     "password": "Mot de passe",
+    "last_password": "Ancien Mot de passe",
+    "new_password": "Nouveau Mot de passe",
     "sign_in": "Se connecter",
     "send": "Envoyer",
     "password_confirmation": "Confirmation du mot de passe",
+    "new_password_confirmation": "Confirmation du nouveau mot de passe",
     "reset": "Réinitialiser",
     "firstname": "Prénom ",
     "lastname": "Nom",

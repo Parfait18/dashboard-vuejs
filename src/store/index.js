@@ -8,14 +8,12 @@ Vue.use(Vuex)
 
 const store = new Vuex.Store({
   state: {
-    langLocal: 'fr',
     authenticated: false,
     registered: false,
     user: {},
     errors: {},
     countries: null,
     globalError: false,
-    langLocal: 'fr',
     isdark: false
   },
   getters: {
@@ -41,9 +39,6 @@ const store = new Vuex.Store({
     globalError(state) {
       return state.globalError
     },
-    langLocal(state) {
-      return state.langLocal
-    },
     isdark(state) {
       return state.isdark;
     }
@@ -58,7 +53,6 @@ const store = new Vuex.Store({
     SET_USER(state, value) {
       state.user = value
     },
-
     SET_ERRORS(state, value) {
       state.errors = value
     },
@@ -67,10 +61,6 @@ const store = new Vuex.Store({
     },
     SET_COUNTRIES(state, value) {
       state.countries = value
-    },
-    SET_LANGLOCAL(state, value) {
-      state.langLocal = value
-      i18n.locale = state.langLocal
     },
     SET_GLOBAL_ERROR(state, value) {
       state.globalError = value
@@ -91,7 +81,7 @@ const store = new Vuex.Store({
       await axios.get('sanctum/csrf-cookie')
       //console.log(payload);
       try {
-        let response = await axios.post('register', payload);
+        let response = await axios.post('api/create-agent', payload);
         commit('SET_REGISTERED', true);
 
       } catch (e) { console.log(e) }
@@ -99,9 +89,9 @@ const store = new Vuex.Store({
     },
     async login({ commit }, payload) {
       await axios.get('sanctum/csrf-cookie')
-
-      try {
-        let response = await axios.post('login', payload);
+      console.log(payload)
+      try {;
+        let response = await axios.post('api/login-agent', payload);
         if (response.status == 200 && response.status <= 299) {
           commit('SET_USER', response.data);
           commit('SET_AUTHENTICATED', true);
@@ -114,7 +104,8 @@ const store = new Vuex.Store({
     async logout({ commit }) {
       await axios.get('sanctum/csrf-cookie')
       try {
-        let response = await axios.post('/logout');
+        let response = await axios.post('api/logout-agent');
+        console.log(response)
         if (response.status >= 200 && response.status <= 299) {
           commit('SET_USER', {})
           commit('SET_AUTHENTICATED', false)
@@ -130,7 +121,7 @@ const store = new Vuex.Store({
     async getcountries({ commit }) {
       await axios.get('sanctum/csrf-cookie')
       try {
-        let response = await axios.get('paysorigine')
+        let response = await axios.get('api/paysorigine')
         let countries = response.data
         console.log(countries)
         commit('SET_COUNTRIES', countries)

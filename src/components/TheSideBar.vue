@@ -23,7 +23,7 @@
               ></i>
             </div>
             <div class="info" style="border-radius: 2px; color: white; ">
-              <a href="#" class="d-block">User name</a>
+              <a href="#" class="d-block">{{ username}}</a>
             </div>
           </div>
 
@@ -103,7 +103,26 @@
 
 </template>
 <script>
+import { mapGetters } from 'vuex'
 export default {
   name: "TheSidebar",
+  data() {
+    return {
+      username: ''
+    }
+  },
+  created () {
+     this.username = this.user.nom +' ' + this.user.prenom
+  },
+   watch: {
+    authenticated(value, oldvalue) {
+      if(this.user){
+        this.username = this.user.nom +' ' + this.user.prenom
+      }
+    },
+  },
+  computed: {
+    ...mapGetters(['authenticated','user']),
+  },
 };
 </script>

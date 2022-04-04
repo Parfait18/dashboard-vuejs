@@ -11,13 +11,16 @@ import TheSideBar from './components/TheSideBar'
 import FlagIcon from 'vue-flag-icon'
 import 'viewerjs/dist/viewer.css'
 import VueViewer from 'v-viewer'
-
 import axios from 'axios';
+
+
 Vue.prototype.$http = axios;
 
 axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
-axios.defaults.baseURL = "http://localhost:8000/";
+axios.defaults.baseURL = " http://localhost:8000/";
 axios.defaults.withCredentials = true;
+
+
 
 axios.interceptors.response.use(function (response) {
   store.commit('SET_GLOBAL_ERROR', false)
