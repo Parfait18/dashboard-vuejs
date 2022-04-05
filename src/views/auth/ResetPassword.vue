@@ -60,7 +60,7 @@
                           text
                           rounded
                         >
-                       {{ $t('btn.valide') }}
+                       {{$t('btn.valide') }}
                         </v-btn>
                       </div>
                     </v-col>

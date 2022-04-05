@@ -128,6 +128,7 @@ import { mapGetters } from 'vuex';
     methods :{
        logout(){
         this.$store.dispatch('logout')
+        this.$router.push('/login')
        },
         changeLanguage(id){
         this.$store.dispatch('setlanguage',this.languages[id]['name']);

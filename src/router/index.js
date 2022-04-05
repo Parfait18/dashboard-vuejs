@@ -1,16 +1,18 @@
 import Vue from 'vue'
-import VueRouter from 'vue-router'
+import Router from 'vue-router'
 import Login from '@/views/auth/Login'
 import CodeVerify from '@/views/auth/CodeVerify'
 // import CodeVerify from '@/views/auth/Register'ResetPassword
 import ResetPassword from '@/views/auth/ResetPassword'
+import ListTraitPost from '../views/post-traitement/ListTraitPost'
+import ListTraitUnit from '../views/post-traitement/ListTraitUnit'
 import Dashboard from '../views/Dashboard'
 import CreateRole from '../views/role/CreateRole'
 import i18n from '../i18n';
 import store from '../store/index'
 import ListAgent from '../views/agent/ListAgent'
 import ListDemands from '../views/demandes/ListDemands'
-Vue.use(VueRouter)
+Vue.use(Router)
 
 const routes = [
   {
@@ -19,7 +21,7 @@ const routes = [
     component: Dashboard,
     meta: {
       title: i18n.t("routes.dashboard"),
-      middleware: 'admin'
+      middleware: 'auth'
     },
   },
   {
@@ -38,7 +40,7 @@ const routes = [
     component: Dashboard,
     meta: {
       title: i18n.t("routes.dashboard"),
-      middleware: 'admin'
+      middleware: 'auth'
     },
   },
   {
@@ -47,25 +49,16 @@ const routes = [
     component: CreateRole,
     meta: {
       title: i18n.t("routes.createrole"),
-      middleware: 'admin'
+      middleware: 'auth'
     },
   },
-  // {
-  //   path: "/create-user",
-  //   name: "register",
-  //   component: Register,
-  //   meta: {
-  //     title: i18n.t("routes.register"),
-  //     middleware: 'admin'
-  //   }
-  // },
   {
     path: "/list-agent",
     name: "listagent",
     component: ListAgent,
     meta: {
       title: i18n.t("routes.listagent"),
-      middleware: 'admin'
+      middleware: 'auth'
     }
   },
   {
@@ -74,7 +67,7 @@ const routes = [
     component: ListDemands,
     meta: {
       title: i18n.t("routes.listdemands"),
-      middleware: 'admin'
+      middleware: 'auth'
     }
   },
   {
@@ -83,7 +76,7 @@ const routes = [
     component: CodeVerify,
     meta: {
       title:"codeverify",
-      middleware: 'admin'
+      middleware: 'auth'
     }
   },
   {
@@ -92,38 +85,57 @@ const routes = [
     component: ResetPassword,
     meta: {
       title:"resetpassword",
-      middleware: 'admin'
+      middleware: 'auth'
+    }
+  },
+  {
+    path: "/list-trait-unit",
+    name: "list-trait-unit",
+    component: ListTraitUnit,
+    meta: {
+      title:"ist-trait-unit",
+      middleware: 'auth'
+    }
+  },
+  {
+    path: "/list-trait-post",
+    name: "list-trait-post",
+    component: ListTraitPost,
+    meta: {
+      title:"list-trait-post",
+      middleware: 'auth'
     }
   }
 
+
 ];
 
-let router = new VueRouter({
+let router = new Router({
   mode: 'history',
   base: process.env.BASE_URL,
   routes
 })
-router.beforeEach((to, from, next) => {
-    document.title = `E-Visa - ${to.meta.title}`
-    store.dispatch('getUser');
-    if(to.meta.middleware=="admin"){
-      if(store.getters.authenticated){
-        next()
-      }else{
-        console.log("non connecté")
-        next({name:'login'})
-      }  
-    }else if(to.meta.middleware=="guest"){
-      if(store.getters.authenticated){
-        next({name:'dashboard'})
-      }else{
-        next()
-      }
-      next()
-    }else{
-      next()
-    }
-  }
-);
+// router.beforeEach((to, from, next) => {
+//     document.title = `E-Visa - ${to.meta.title}`
+//     store.dispatch('getUser');
+ 
+//     if(to.meta.middleware=='auth'){
+//       if(store.state.authenticated){
+//         next()
+//       }else{  
+//         next({name:'login'})
+//       }  
+//     }else if(to.meta.middleware=='guest'){
+//       if(store.state.authenticated){
+//         next({name:'dashboard'})   
+//       }else{ 
+//         next()       
+//       }   
+//     }
+//     else {
+//       next()
+//     }
+//   }
+// );
 
 export default router

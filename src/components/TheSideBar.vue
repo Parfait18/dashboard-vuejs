@@ -41,8 +41,7 @@
               <li class="nav-item">
                 <a href="/" class="nav-link">
                 <i class="fas fa-home"></i>
-                  <p> {{$t('link.home')}}
-                 
+                  <p> {{$t('link.home')}}       
                   </p>
                 </a>            
               </li>
@@ -61,25 +60,20 @@
                     </a>
                   </li>
                 </ul>
-                <ul class="nav nav-treeview">
+                <!-- <ul class="nav nav-treeview">
                   <li class="nav-item">
                     <a href="/create-role" class="nav-link">
                       <i class="far fa-circle nav-icon"></i>
                       <p>{{$t('link.create_role')}}</p>
                     </a>
                   </li>
-                </ul>
+                </ul> -->
                  
               </li>
-           
-            
-          
               <li class="nav-item">
                 <a href="#" class="nav-link">
                   <i class="nav-icon fas fa-table"></i>
-                  <p>
-                    Demandes
-                    <i class="fas fa-angle-left right"></i>
+                  <p>Demandes<i class="fas fa-angle-left right"></i>
                   </p>
                 </a>
                 <ul class="nav nav-treeview">
@@ -87,6 +81,34 @@
                     <a href="/list-demands" class="nav-link">
                       <i class="far fa-circle nav-icon"></i>
                       <p>{{$t('link.list_demands')}}</p>
+                    </a>
+                  </li>
+                  
+                </ul>
+              </li>
+
+                   <li class="nav-item">
+                <a href="#" class="nav-link">
+                <i class="fas fa-solid fa-computer"></i>
+                  <p>
+                    Traitement  
+                    <i class="fas fa-angle-left right"></i>
+                  </p>
+                </a>
+                <ul class="nav nav-treeview">
+                  <li class="nav-item">
+                    <a href="/list-trait-post" class="nav-link">
+                      <i class="far fa-circle nav-icon"></i>
+                      <p>{{$t('link.list_post')}}</p>
+                    </a>
+                  </li>
+                  
+                </ul>
+                  <ul class="nav nav-treeview">
+                  <li class="nav-item">
+                    <a href="/list-trait-unit" class="nav-link">
+                      <i class="far fa-circle nav-icon"></i>
+                      <p>{{$t('link.list_unit')}}</p>
                     </a>
                   </li>
                   

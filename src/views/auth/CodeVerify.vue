@@ -33,7 +33,6 @@
                     v-model="snackbar"
                     :color="snackbarColor"
                     :timeout="2000"
-                    
                   >
                     {{ text }}
                   </v-snackbar>
@@ -55,6 +54,7 @@ export default {
   name: 'Register',
   data() {
     return {
+      token: null,
       loading: false,
       snackbar: false,
       snackbarColor: 'default',
@@ -69,11 +69,19 @@ export default {
   watch: {
     registered(value, oldvalue) {},
   },
-  created() {},
+  created() {
+    const urlParams = new URLSearchParams(window.location.search)
+    this.token = urlParams.get('token')
+  },
   computed: {
     ...mapGetters(['errors', 'registered', 'countries', 'langLocal']),
   },
   methods: {
+     sleep(ms) {
+      return new Promise((resolve) => {
+        setTimeout(resolve, ms);
+      });
+    },
     async submit() {
       this.isLoading = true
       this.$v.$touch()
@@ -93,15 +101,36 @@ export default {
           })
       }
     },
-    onFinish (rsp) {
-        this.loading = true
-        setTimeout(() => {
+    async onFinish(rsp) {
+      this.loading = true
+      await this.sleep(2000);
+      await this.$store
+        .dispatch('getTokenInfo', rsp)
+        .then((response) => {
+          console.log(response);
+          if (response.success==true) {
+             this.snackbarColor = 'success'
+              this.text = "Code d'accés valide"
+              setTimeout(() => {
+                this.snackbar = true
+                this.isLoading = false
+              }, 2500);         
+       
+          } else {
+            this.snackbarColor = 'warning'
+              this.text = "Code d'accés valide"
+              setTimeout(() => {
+                this.snackbar = true
+                this.isLoading = false
+              }, 2500);         
+          }
+         
+        })
+        .catch((error) => {
           this.loading = false
-          this.snackbarColor = (rsp === this.expectedOtp) ? 'success' : 'warning'
-          this.text = `Processed OTP with "${rsp}" (${this.snackbarColor})`
-          this.snackbar = true
-        }, 3500)
-      },
+          console.error(error)
+        })
+    },
   },
 }
 </script>
@@ -127,9 +156,9 @@ export default {
   z-index: 100;
   width: 100%;
 }
- .position-relative {
-   position: relative;
- }
+.position-relative {
+  position: relative;
+}
 @media (max-width: 700px) {
 }
 </style>

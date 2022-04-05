@@ -98,7 +98,7 @@
                               :error-messages="phonenumberErrors"
                             />
                           </v-col>
-                          <v-col cols="12">
+                          <!-- <v-col cols="12">
                             <v-select
                               required
                               v-model="editedItem.homecountry"
@@ -109,18 +109,7 @@
                               item-text="nom"
                               item-value="nom"
                             ></v-select>
-                          </v-col>
-                          <v-col cols="12">
-                            <v-text-field
-                              :label="$t('auth.password')"
-                              type="password"
-                              v-model="editedItem.password"
-                              @blur="$v.editedItem.password.$touch()"
-                              required
-                              :error-messages="passwordErrors"
-                            ></v-text-field>
-                          </v-col>
-
+                          </v-col> -->
                           <v-col>
                             <v-select
                               class="d-flex ml-auto"
@@ -132,6 +121,20 @@
                               required
                               label="Role"
                               :error-messages="roleErrors"
+                              multiple
+                            ></v-select>
+                          </v-col>
+                            <v-col>
+                            <v-select
+                              class="d-flex ml-auto"
+                              cols="12"
+                              v-model="editedItem.unite"
+                              :items="unites_items"
+                              filled
+                              @blur="$v.editedItem.unite.$touch()"
+                              required
+                              label="Unite"
+                              :error-messages="uniteErrors"
                               multiple
                             ></v-select>
                           </v-col>
@@ -201,9 +204,6 @@ import { validationMixin } from 'vuelidate'
 import {
   required,
   email,
-  minLength,
-  maxLength,
-  sameAs,
   helpers,
 } from 'vuelidate/lib/validators'
 import i18n from '../../i18n'
@@ -215,12 +215,12 @@ export default {
   validations: {
     editedItem: {
       email: { required, email },
-      password: { required, minLength: minLength(8), maxLength: maxLength(16) },
       firstname: { required, nameRegex },
       lastname: { required, nameRegex },
       homecountry: { required },
       phonenumber: { required },
       roles: { required },
+      unite: { required },
     },
   },
   components: {
@@ -240,6 +240,7 @@ export default {
     sortBy: 'created_at',
     sortDesc: true,
     roles_items: null,
+    unites_items: null,
     errorMessages: {},
     loading: false,
     message: null,
@@ -250,24 +251,22 @@ export default {
     editedIndex: -1,
     editedItem: {
       roles: null,
+      unite: null,
       roles_value: null,
       firstname: null,
       lastname: null,
       phonenumber: null,
       email: null,
-      homecountry: null,
-      password: null,
+      gender:null
     },
     defaultItem: {
-      roles: null,
+      unite: null,
       roles_value: null,
       firstname: null,
       lastname: null,
       phonenumber: null,
       email: null,
-      homecountry: null,
-      password: null,
-      password_confirmation: null,
+      gender:null
     },
   }),
   computed: {
@@ -287,15 +286,6 @@ export default {
         { text: 'Actions', value: 'actions' },
       ]
       return this.headers
-    },
-    passwordErrors() {
-      const errors = []
-      if (!this.$v.editedItem.password.$dirty) return errors
-      if (!this.$v.editedItem.password.minLength)
-        errors.push(i18n.t('validations.min_caracter'))
-      !this.$v.editedItem.password.required &&
-        errors.push(i18n.t('validations.required_password'))
-      return errors
     },
     emailErrors() {
       const errors = []
@@ -331,17 +321,24 @@ export default {
         errors.push(i18n.t('validations.required_phonenumber'))
       return errors
     },
-    homecountryErrors() {
-      const errors = []
-      if (!this.$v.editedItem.homecountry.$dirty) return errors
-      !this.$v.editedItem.homecountry.required &&
-        errors.push(i18n.t('validations.required_homecountry'))
-      return errors
-    },
+    // homecountryErrors() {
+    //   const errors = []
+    //   if (!this.$v.editedItem.homecountry.$dirty) return errors
+    //   !this.$v.editedItem.homecountry.required &&
+    //     errors.push(i18n.t('validations.required_homecountry'))
+    //   return errors
+    // },
     roleErrors() {
       const errors = []
       if (!this.$v.editedItem.roles.$dirty) return errors
       !this.$v.editedItem.roles.required &&
+        errors.push(i18n.t('validations.role_required'))
+      return errors
+    },
+    uniteErrors() {
+      const errors = []
+      if (!this.$v.editedItem.unite.$dirty) return errors
+      !this.$v.editedItem.unite.required &&
         errors.push(i18n.t('validations.role_required'))
       return errors
     },
@@ -385,7 +382,26 @@ export default {
       ]
     },
     async getRoles() {
-      this.roles_items = ['agent1', 'agent2']
+      await this.$store
+            .dispatch('getRoles', data)
+            .then((response) => {
+             this.roles_items = response.data
+            })
+            .catch((error) => {
+             
+              console.error(error)
+            })
+    },
+     async getUnites() {
+      await this.$store
+            .dispatch('getUnites', data)
+            .then((response) => {
+             this.unites_items = response.data
+            })
+            .catch((error) => {
+             
+              console.error(error)
+            })
     },
     editItem(item) {
       this.editedIndex = this.agents.indexOf(item)
@@ -421,23 +437,43 @@ export default {
       })
     },
 
-    save() {
+    async save() {
       if (this.editedIndex > -1) {
         Object.assign(this.agents[this.editedIndex], this.editedItem)
+        
       } else {
-        this.desserts.push(this.editedItem)
-      }
-      this.close()
-    },
-    async submit() {
+       // this.desserts.push(this.editedItem)
+       console.log('zfzef')
       this.isLoading = true
       this.$v.$touch()
       const data = new FormData()
       data.append('prenom', this.editedItem.firstname)
       data.append('nom', this.editedItem.lastname)
       data.append('email', this.editedItem.email)
-      data.append('password', this.editedItem.password)
-      // data.append("password_confirmation", this.password_confirmation);
+      data.append('phonenumber', this.editedItem.phonenumber)
+
+        if (!this.$v.$invalid) {
+          await this.$store
+            .dispatch('register', data)
+            .then((response) => {
+              this.isLoading = false
+            })
+            .catch((error) => {
+              this.loading = false
+              console.error(error)
+            })
+        }
+    
+      }
+      this.close()
+    },
+    async submit() {
+     this.isLoading = true
+      this.$v.$touch()
+      const data = new FormData()
+      data.append('prenom', this.editedItem.firstname)
+      data.append('nom', this.editedItem.lastname)
+      data.append('email', this.editedItem.email)
       data.append('phonenumber', this.editedItem.phonenumber)
       data.append('paysorigine', this.editedItem.homecountry)
 
@@ -452,7 +488,7 @@ export default {
             console.error(error)
           })
       }
-    },
+    }, 
   },
 }
 </script>

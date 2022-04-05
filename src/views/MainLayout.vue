@@ -69,23 +69,23 @@ export default {
     return {};
   },
   created() {
-    this.authenticated;
+    // this.authenticated;
   },
   components: {},
   computed: {
     ...mapGetters(["authenticated", "langLocal", "isdark"]),
   },
   watch: {
-    authenticated(value) {
-      if (value === false) {
-        this.$router.push("/login");
-      }
-    },
+    // authenticated(value) {
+    //   if (value === false) {
+    //     this.$router.push("/login");
+    //   }
+    // },
   },
   methods: {
-    logout() {
-      this.$store.dispatch("logout");
-    },
+    // logout() {
+    //   this.$store.dispatch("logout");
+    // },
   },
 };
 </script>

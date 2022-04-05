@@ -8,7 +8,7 @@
               <v-card class="login-wrap p-5 p-md-5">
                 <div class="d-flex">
                   <v-card-title class="w-100 card-title mb-2 justify-center">
-                    {{ $t('title.login') }}
+                    {{$t('title.login')}}
                   </v-card-title>
                 </div>
                 <v-form>
@@ -93,10 +93,11 @@ export default {
         this.$store
           .dispatch("login", data)
           .then((response) => {
-            console.log(response)
+        
             this.isLOading = false;
           })
           .catch((error) => {
+            console.log(response)
             this.isLOading = false;
             console.log(error);
           });
@@ -108,15 +109,6 @@ export default {
   },
   created() {
     this.$root.$i18n.locale = this.langLocal
-  },
-  watch: {
-    authenticated(value, oldvalue) {
-      if (value === true) {
-        this.$store.dispatch('clear')
-        console.log('authenticated a changé')
-        this.$router.push('/dashboard')
-      }
-    },
   },
   computed: {
     passwordErrors() {
@@ -136,8 +128,19 @@ export default {
         errors.push(i18n.t('validations.required_email'))
       return errors
     },
-    ...mapGetters(['errors', 'authenticated', 'langLocal']),
+    ...mapGetters(['errors','authenticated','verifycode', 'langLocal']),
   },
+  watch: {
+    verifycode(value, oldvalue) {
+      console.log(value);
+      if (value == true) {
+        this.$store.dispatch('clear')
+        console.log("code change");
+        this.$router.push('/verify-code')
+      }
+    }
+  },
+
 }
 </script>
 <style scoped>

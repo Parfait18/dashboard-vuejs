@@ -100,9 +100,11 @@
   },
   "link":{
     "home":"Acceuil",
-    "user_role":"Contrôle utilisateur et rôle ",
+    "user_role":"Agents et rôles ",
     "list_agent":"Liste des Agents ",
     "create_role":"Créer un rôle",
-    "list_demands":"Liste des demandes"
+    "list_demands":"Les Demandes",
+    "list_post":"Posts de Traitements",
+    "list_unit":"Unités de Traitements"
   }
 }

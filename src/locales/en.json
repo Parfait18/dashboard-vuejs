@@ -1,5 +1,6 @@
 {
   "routes": {
+    "login": "login",
     "register": "Register",
     "profile": "Profile",
     "dashboard": "Dashboard",
@@ -9,7 +10,6 @@
     "listdemands": "list-demands"
   },
   "auth": {
-    "username": "Username",
     "firstname": "Firstname",
     "lastname": "Lastname",
     "password": "Password",
@@ -102,6 +102,8 @@
     "user_role":"User and Role Controls",
     "list_agent":"Agents list",
     "create_role":"Create role",
-    "list_demands":"Demands list"
+    "list_demands":"Demands list",
+    "list_post":"Traitements Posts",
+    "list_unit":"Traitements Units"
   }
 }
